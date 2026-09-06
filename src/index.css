@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #fefefe;
+  --color-footer: #050405;
+  --color-hero: #f8f8fa;
+  --color-accent: #06563f;
+
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Lato", sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+}

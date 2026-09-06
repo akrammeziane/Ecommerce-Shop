@@ -1,0 +1,3144 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+public/
+  favicon.svg
+  icons.svg
+src/
+  assets/
+    hero.png
+    HERO.png
+    react.svg
+    vite.svg
+  compenants/
+    CategorySection.jsx
+    Footer.jsx
+    Hero.jsx
+    InfoStrip.jsx
+    NavBar.jsx
+    NewArrivalsSection.jsx
+    Newsletter.jsx
+    PromoSection.jsx
+    TopBar.jsx
+  components/
+    ui/
+      dropdown-menu.jsx
+  lib/
+    utils.js
+  pages/
+    admin/
+      AdminLayout.jsx
+      AdminProfile.jsx
+      Dashboard.jsx
+      OrdersManagement.jsx
+      ProductsManagement.jsx
+      UsersManagement.jsx
+    Landing-page.jsx
+    ShoppingProducts.jsx
+  App.css
+  App.jsx
+  index.css
+  main.jsx
+.gitignore
+components.json
+eslint.config.js
+index.html
+jsconfig.json
+package.json
+README.md
+vite.config.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="public/icons.svg">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bluesky-icon" viewBox="0 0 16 17">
+    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
+    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
+  </symbol>
+  <symbol id="discord-icon" viewBox="0 0 20 19">
+    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+  </symbol>
+  <symbol id="documentation-icon" viewBox="0 0 21 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+  </symbol>
+  <symbol id="github-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+  </symbol>
+  <symbol id="social-icon" viewBox="0 0 20 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+  </symbol>
+  <symbol id="x-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+  </symbol>
+</svg>
+</file>
+
+<file path="src/assets/react.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+</file>
+
+<file path="src/assets/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="77" height="47" fill="none" aria-labelledby="vite-logo-title" viewBox="0 0 77 47"><title id="vite-logo-title">Vite</title><style>.parenthesis{fill:#000}@media (prefers-color-scheme:dark){.parenthesis{fill:#fff}}</style><path fill="#9135ff" d="M40.151 45.71c-.663.844-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.493c-.92 0-1.457-1.04-.92-1.788l7.479-10.471c1.07-1.498 0-3.578-1.842-3.578H15.443c-.92 0-1.456-1.04-.92-1.788l9.696-13.576c.213-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.472c-1.07 1.497 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.087.89 1.83L40.153 45.712z"/><mask id="a" width="48" height="47" x="14" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M40.047 45.71c-.663.843-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.389c-.92 0-1.457-1.04-.92-1.788l7.479-10.472c1.07-1.497 0-3.578-1.842-3.578H15.34c-.92 0-1.456-1.04-.92-1.788l9.696-13.575c.213-.297.556-.474.92-.474H53.93c.92 0 1.456 1.04.92 1.788L47.37 13.03c-1.07 1.498 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.088.89 1.831L40.049 45.712z"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#eee6ff" rx="5.508" ry="14.704" transform="rotate(269.814 20.96 11.29)scale(-1 1)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#eee6ff" rx="10.399" ry="29.851" transform="rotate(89.814 -16.902 -8.275)scale(1 -1)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#8900ff" rx="5.508" ry="30.487" transform="rotate(89.814 -19.197 -7.127)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.928 4.177)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.738 5.52)scale(1 -1)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#eee6ff" rx="14.072" ry="22.078" transform="rotate(93.35 31.245 55.578)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx="14.592" cy="9.743" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(39.51 14.592 9.743)"/></g><g filter="url(#k)"><ellipse cx="61.728" cy="-5.321" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 61.728 -5.32)"/></g><g filter="url(#l)"><ellipse cx="55.618" cy="7.104" fill="#00c2ff" rx="5.971" ry="9.665" transform="rotate(37.892 55.618 7.104)"/></g><g filter="url(#m)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#n)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#o)"><ellipse cx="49.857" cy="30.678" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 49.857 30.678)"/></g><g filter="url(#p)"><ellipse cx="52.623" cy="33.171" fill="#00c2ff" rx="5.971" ry="15.297" transform="rotate(37.892 52.623 33.17)"/></g></g><path d="M6.919 0c-9.198 13.166-9.252 33.575 0 46.789h6.215c-9.25-13.214-9.196-33.623 0-46.789zm62.424 0h-6.215c9.198 13.166 9.252 33.575 0 46.789h6.215c9.25-13.214 9.196-33.623 0-46.789" class="parenthesis"/><defs><filter id="b" width="60.045" height="41.654" x="-5.564" y="16.92" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-40.407" y="-6.762" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-35.435" y="2.801" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-30.84" y="20.8" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-29.307" y="21.949" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="29.961" y="-17.13" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-13.43" y="-22.082" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="34.321" y="-37.644" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="38.847" y="-10.552" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="22.45" y="-1.645" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="32.919" y="11.36" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="src/compenants/CategorySection.jsx">
+const categories = [
+  {
+    title: "Hoodies",
+    image:
+      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "T-Shirts",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Pants",
+    image:
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Jackets",
+    image:
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Accessories",
+    image:
+      "https://images.unsplash.com/photo-1521369909026-2afed882baee?auto=format&fit=crop&w=900&q=80",
+  },
+];
+
+export default function CategorySection() {
+  return (
+    <section className="mx-auto mt-10 max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <h2 className="text-center font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
+        Shop by category
+      </h2>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {categories.map(({ title, image }) => (
+          <article
+            key={title}
+            className="group relative overflow-hidden bg-black"
+          >
+            <div className="relative h-[320px] overflow-hidden sm:h-[360px]">
+              <img
+                src={image}
+                alt={title}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105 grayscale"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+            </div>
+
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <p className="text-xl font-bold uppercase tracking-wide text-primary">
+                {title}
+              </p>
+              <button className="mt-3 inline-flex items-center border border-primary/60 px-3 py-2 text-[10px] font-medium uppercase tracking-[0.2em] text-primary transition hover:bg-primary hover:text-footer">
+                Shop now
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/compenants/Footer.jsx">
+export default function Footer() {
+  return (
+    <footer className="mt-20 bg-footer text-primary">
+      <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:px-8">
+        <div>
+          <h3 className="font-heading text-4xl uppercase tracking-tight">
+            Talqin
+          </h3>
+          <p className="mt-4 max-w-xs text-sm text-primary/70">
+            Streetwear made for the bold. We create timeless apparel designed to
+            stand out.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-primary">
+            Shop
+          </h4>
+          <ul className="mt-4 space-y-2 text-sm text-primary/75">
+            <li>All products</li>
+            <li>Hoodies</li>
+            <li>T-shirts</li>
+            <li>Pants</li>
+            <li>Jackets</li>
+            <li>Accessories</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-primary">
+            Customer Care
+          </h4>
+          <ul className="mt-4 space-y-2 text-sm text-primary/75">
+            <li>Contact us</li>
+            <li>Shipping &amp; Delivery</li>
+            <li>Returns</li>
+            <li>Size Guide</li>
+            <li>Track Order</li>
+            <li>FAQ</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-primary">
+            Company
+          </h4>
+          <ul className="mt-4 space-y-2 text-sm text-primary/75">
+            <li>About us</li>
+            <li>Our story</li>
+            <li>Careers</li>
+            <li>Wholesale</li>
+            <li>Privacy</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-primary/10">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-3 px-4 py-4 text-xs uppercase tracking-[0.15em] text-primary/70 sm:flex-row sm:px-6 lg:px-8">
+          <p>© 2026 Talqin. All rights reserved.</p>
+          <div className="flex gap-4">
+            <span>Visa</span>
+            <span>Mastercard</span>
+            <span>PayPal</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+</file>
+
+<file path="src/compenants/Hero.jsx">
+import heroImage from "../assets/HERO.png";
+import { Link } from "react-router-dom";
+
+export default function Hero() {
+  return (
+    <section className="relative bg-black text-primary">
+      <div className="mx-auto max-w-[1400px] px-0 sm:px-0 lg:px-0">
+        <div className="relative min-h-[460px] overflow-hidden sm:min-h-[500px] lg:min-h-[580px]">
+          <img
+            src={heroImage}
+            alt="Talqin clothing collection"
+            className="absolute inset-0 h-full w-full object-cover object-left"
+          />
+
+          <div className="absolute inset-0 bg-black/0" />
+
+          <div className="relative z-10 flex h-full max-w-[560px] flex-col justify-center px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+            <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.4em] text-accent sm:text-xs">
+              New collection
+            </p>
+
+            <h1 className="font-heading text-4xl font-black uppercase leading-[0.9] tracking-[-0.05em] text-primary sm:text-5xl lg:text-[5rem]">
+              Built different.
+              <span className="mt-2 block">
+                Made to <span className="text-accent">stand out.</span>
+              </span>
+            </h1>
+
+            <p className="mt-5 max-w-sm text-sm leading-6 text-white/75 sm:text-base">
+              Premium streetwear for those who set their own rules.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
+              <Link to="/shop">
+                <button className="bg-accent px-5 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-footer transition hover:opacity-90 sm:px-6 sm:text-xs">
+                  Shop now
+                </button>
+              </Link>
+              <button className="border border-white/35 bg-transparent px-5 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-primary transition hover:bg-primary hover:text-footer sm:px-6 sm:text-xs">
+                Explore collection
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/compenants/InfoStrip.jsx">
+import { Check, ShieldCheck, Truck, Headphones } from "lucide-react";
+
+const items = [
+  { icon: Truck, title: "Free shipping", text: "On orders over $100" },
+  { icon: Check, title: "Easy returns", text: "30-day returns" },
+  { icon: ShieldCheck, title: "Secure payment", text: "100% secure checkout" },
+  { icon: Headphones, title: "Customer support", text: "24/7 support" },
+];
+
+export default function InfoStrip() {
+  return (
+    <div className="mx-auto -mt-1 max-w-[1400px] border border-black/10 bg-hero shadow-sm">
+      <div className="grid gap-4 px-4 py-4 sm:grid-cols-2 lg:grid-cols-4 lg:px-6">
+        {items.map(({ icon: Icon, title, text }) => (
+          <div
+            key={title}
+            className="flex items-center gap-3 border-b border-black/5 pb-3 last:border-b-0 last:pb-0 sm:border-b-0 sm:pb-0"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-hero text-footer">
+              <Icon size={18} />
+            </div>
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-tight text-footer">
+                {title}
+              </p>
+              <p className="text-xs text-footer/70">{text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/compenants/NavBar.jsx">
+import { useState } from "react";
+import {
+  ChevronDown,
+  Menu,
+  Search,
+  ShoppingCart,
+  UserRound,
+  X,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+export default function NavBar({ onNewArrivalsClick }) {
+  const items = ["HOODIES", "T-SHIRTS", "PANTS", "JACKETS", "ACCESSORIES"];
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
+  // const scrollToSection = (sectionId) => {
+  //   console.log(sectionId);
+  //   const section = document.getElementById(sectionId);
+  //   console.log(section);
+  //   if (section) {
+  //     section.scrollIntoView({ behavior: "smooth" });
+  //     setMobileMenuOpen(false);
+  //   }
+  // };
+
+  return (
+    <header className="border-b border-black/10 bg-primary">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
+          <h1 className="font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
+            Talqin
+          </h1>
+        </div>
+
+        <nav className="hidden items-center gap-8 lg:flex">
+          <Link
+            to="/"
+            className="text-sm font-medium uppercase tracking-[0.12em] text-footer"
+          >
+            <button className="text-sm font-medium uppercase tracking-[0.12em] text-footer">
+              Home
+            </button>
+          </Link>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShopOpen((prev) => !prev)}
+              className="flex items-center gap-1 text-sm font-medium uppercase tracking-[0.12em] text-footer"
+            >
+              Shop
+              <ChevronDown size={15} />
+            </button>
+
+            {shopOpen && (
+              <div className="absolute left-0 top-full z-50 mt-3 min-w-[200px] border border-black/10 bg-primary shadow-lg">
+                {items.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className="block w-full border-b border-black/5 px-4 py-3 text-left text-sm uppercase tracking-[0.14em] text-footer transition hover:bg-black/5 last:border-b-0"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            className="text-sm font-medium uppercase tracking-[0.12em] text-footer"
+            onClick={onNewArrivalsClick}
+          >
+            New arrivals
+          </button>
+
+          <button className="text-sm font-medium uppercase tracking-[0.12em] text-footer">
+            Collections
+          </button>
+          <button className="text-sm font-medium uppercase tracking-[0.12em] text-footer">
+            Sale
+          </button>
+          <button className="text-sm font-medium uppercase tracking-[0.12em] text-footer">
+            About us
+          </button>
+        </nav>
+
+        <div className="flex items-center gap-3 text-footer">
+          <button
+            aria-label="Search"
+            className="rounded-full p-2 transition hover:bg-black/5"
+          >
+            <Search size={18} />
+          </button>
+          <button
+            aria-label="Profile"
+            className="rounded-full p-2 transition hover:bg-black/5"
+          >
+            <UserRound size={18} />
+          </button>
+          <button
+            aria-label="Shopping cart"
+            className="relative rounded-full p-2 transition hover:bg-black/5"
+          >
+            <ShoppingCart size={18} />
+            <span className="absolute -right-1.5 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-primary">
+              0
+            </span>
+          </button>
+
+          <button
+            type="button"
+            aria-label="Open menu"
+            className="rounded-full p-2 transition hover:bg-black/5 lg:hidden"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {mobileMenuOpen && (
+        <div className="border-t border-black/10 bg-primary px-4 py-4 lg:hidden">
+          <div className="flex flex-col gap-3">
+            <Link to="/">
+              <button className="text-left text-sm font-medium uppercase tracking-[0.12em] text-footer">
+                Home
+              </button>
+            </Link>
+
+            <div>
+              <button
+                type="button"
+                onClick={() => setShopOpen((prev) => !prev)}
+                className="flex w-full items-center justify-between text-left text-sm font-medium uppercase tracking-[0.12em] text-footer"
+              >
+                <span>Shop</span>
+                <ChevronDown
+                  size={15}
+                  className={shopOpen ? "rotate-180" : ""}
+                />
+              </button>
+
+              {shopOpen && (
+                <div className="mt-2 flex flex-col gap-2 border-l border-black/10 pl-3">
+                  {items.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className="text-left text-sm uppercase tracking-[0.12em] text-footer/80"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={onNewArrivalsClick}
+              className="text-left text-sm font-medium uppercase tracking-[0.12em] text-footer"
+            >
+              New arrivals
+            </button>
+            <button className="text-left text-sm font-medium uppercase tracking-[0.12em] text-footer">
+              Collections
+            </button>
+            <button className="text-left text-sm font-medium uppercase tracking-[0.12em] text-footer">
+              Sale
+            </button>
+            <button className="text-left text-sm font-medium uppercase tracking-[0.12em] text-footer">
+              About us
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+</file>
+
+<file path="src/compenants/NewArrivalsSection.jsx">
+import { Heart } from "lucide-react";
+
+const products = [
+  {
+    name: "Chaos Tee - Black",
+    price: "$49.00",
+    image:
+      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Washed Hoodie - Charcoal",
+    price: "$89.00",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Utility Cargo Pants - Black",
+    price: "$99.00",
+    image:
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Sketch Tee - Sand",
+    price: "$45.00",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Urban Cap - Black",
+    price: "$45.00",
+    image:
+      "https://images.unsplash.com/photo-1521369909026-2afed882baee?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Society Hoodie - Olive",
+    price: "$89.00",
+    image:
+      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+  },
+];
+
+export default function NewArrivalsSection() {
+  return (
+    <section
+      id="new-arrivals"
+      className="mx-auto mt-12 max-w-[1400px] px-4 sm:px-6 lg:px-8"
+    >
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
+          New arrivals
+        </h2>
+
+        <button className="text-sm font-medium uppercase tracking-[0.2em] text-footer">
+          View all →
+        </button>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+        {products.map(({ name, price, image }) => (
+          <article key={name} className="group bg-[#f5f5f5] p-2">
+            <div className="relative overflow-hidden bg-white">
+              <button
+                type="button"
+                aria-label={`Save ${name}`}
+                className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-footer shadow-sm"
+              >
+                <Heart size={14} />
+              </button>
+
+              <img
+                src={image}
+                alt={name}
+                className="h-[240px] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+              />
+            </div>
+
+            <div className="mt-3 space-y-2 px-1 pb-2">
+              <p className="text-sm font-medium text-footer">{name}</p>
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold text-footer">
+                  {price}
+                </span>
+                <div className="flex gap-2">
+                  {[...Array(3)].map((_, idx) => (
+                    <span
+                      key={idx}
+                      className="h-3 w-3 rounded-full border border-black/20 bg-[#2a2a2a]"
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/compenants/Newsletter.jsx">
+import { Mail } from "lucide-react";
+
+export default function Newsletter() {
+  return (
+    <section className="mx-auto mt-16 max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-none border border-black/10 bg-[#f7f7f7] px-5 py-6 sm:flex-row sm:px-8">
+        <div className="flex items-center gap-3 text-footer">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-primary">
+            <Mail size={18} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-tight">
+              Stay in the loop
+            </p>
+            <p className="text-xs text-footer/70">
+              New drops, exclusive offers, and more.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex w-full max-w-md items-center gap-2 sm:w-auto">
+          <input
+            type="email"
+            placeholder="Enter your email address"
+            className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40"
+          />
+          <button className="bg-accent px-5 py-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/compenants/PromoSection.jsx">
+import { Link } from "react-router-dom";
+export default function PromoSection() {
+  return (
+    <section className="mx-auto mt-10 grid max-w-[1400px] gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8 ">
+      <div className="flex  h-full min-h-[120px] flex-col justify-between bg-[#f2f2f2] p-4 sm:min-h-[140px] sm:p-5 ">
+        <div>
+          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-footer/70 sm:text-[10px]">
+            Join the movement
+          </p>
+          <h3 className="mt-2 max-w-xs font-heading text-[1.8rem] font-bold uppercase leading-none text-footer sm:text-[2.1rem]">
+            Be part of something real.
+          </h3>
+        </div>
+        <Link to="/shop">
+          <button className="mt-4 inline-flex w-fit items-center justify-center bg-accent px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] text-primary transition hover:opacity-90 sm:text-[10px]">
+            Shop now
+          </button>
+        </Link>
+      </div>
+
+      <div className="flex  h-full min-h-[120px] flex-col justify-between bg-[#1a1a1a] p-4 sm:min-h-[140px] sm:p-5">
+        <div>
+          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-white/60 sm:text-[10px]">
+            Seasonal sale
+          </p>
+          <h3 className="mt-2 max-w-xs font-heading text-[1.8rem] font-bold uppercase leading-none text-white sm:text-[2.1rem]">
+            Fresh collection.
+          </h3>
+        </div>
+
+        <button className="mt-4 inline-flex w-fit items-center justify-center bg-white px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a] transition hover:opacity-80 sm:text-[10px]">
+          Explore
+        </button>
+      </div>
+      <div className="flex  h-full min-h-[120px] flex-col justify-between bg-gradient-to-br from-[#2d5a4f] to-[#1a3a35] p-4 sm:min-h-[140px] sm:p-5">
+        <div>
+          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-emerald-200/70 sm:text-[10px]">
+            VIP members
+          </p>
+          <h3 className="mt-2 max-w-xs font-heading text-[1.8rem] font-bold uppercase leading-none text-emerald-50 sm:text-[2.1rem]">
+            Exclusive perks.
+          </h3>
+        </div>
+
+        <button className="mt-4 inline-flex w-fit items-center justify-center bg-emerald-400 px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a3a35] transition hover:bg-emerald-300 sm:text-[10px]">
+          Join now
+        </button>
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/compenants/TopBar.jsx">
+export default function TopBar() {
+  return (
+    <div className="bg-footer text-primary">
+      <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-2 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.18em] sm:px-6 lg:px-8">
+        <p className="flex items-center gap-2">
+          <span className="inline-block h-2.5 w-2.5 rounded-full border border-primary/80" />
+          Free shipping on orders over $100
+        </p>
+        <p className="flex items-center gap-2 text-primary/80">
+          <span className="inline-block h-2.5 w-2.5 rounded-full border border-primary/80" />
+          10% off your first order: code: STREETLO
+        </p>
+        <p className="text-primary/90">Help & support</p>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/ui/dropdown-menu.jsx">
+import * as React from "react"
+import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
+
+import { cn } from "@/lib/utils"
+
+function DropdownMenu({
+  ...props
+}) {
+  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+}
+
+function DropdownMenuPortal({
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
+  )
+}
+
+function DropdownMenuTrigger({
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Trigger
+      data-slot="dropdown-menu-trigger"
+      {...props}
+    />
+  )
+}
+
+function DropdownMenuContent({
+  className,
+  sideOffset = 4,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Portal>
+      <DropdownMenuPrimitive.Content
+        data-slot="dropdown-menu-content"
+        sideOffset={sideOffset}
+        className={cn(
+          "z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+          className
+        )}
+        {...props}
+      />
+    </DropdownMenuPrimitive.Portal>
+  )
+}
+
+function DropdownMenuGroup({
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
+  )
+}
+
+function DropdownMenuItem({
+  className,
+  inset,
+  variant = "default",
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Item
+      data-slot="dropdown-menu-item"
+      data-inset={inset}
+      data-variant={variant}
+      className={cn(
+        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground data-[variant=destructive]:*:[svg]:text-destructive!",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function DropdownMenuCheckboxItem({
+  className,
+  children,
+  checked,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.CheckboxItem
+      data-slot="dropdown-menu-checkbox-item"
+      className={cn(
+        "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      checked={checked}
+      {...props}
+    >
+      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+        <DropdownMenuPrimitive.ItemIndicator>
+          <CheckIcon className="size-4" />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </DropdownMenuPrimitive.CheckboxItem>
+  )
+}
+
+function DropdownMenuRadioGroup({
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.RadioGroup
+      data-slot="dropdown-menu-radio-group"
+      {...props}
+    />
+  )
+}
+
+function DropdownMenuRadioItem({
+  className,
+  children,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.RadioItem
+      data-slot="dropdown-menu-radio-item"
+      className={cn(
+        "relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    >
+      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+        <DropdownMenuPrimitive.ItemIndicator>
+          <CircleIcon className="size-2 fill-current" />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </DropdownMenuPrimitive.RadioItem>
+  )
+}
+
+function DropdownMenuLabel({
+  className,
+  inset,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Label
+      data-slot="dropdown-menu-label"
+      data-inset={inset}
+      className={cn(
+        "px-2 py-1.5 text-sm font-medium data-[inset]:pl-8",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function DropdownMenuSeparator({
+  className,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.Separator
+      data-slot="dropdown-menu-separator"
+      className={cn("-mx-1 my-1 h-px bg-border", className)}
+      {...props}
+    />
+  )
+}
+
+function DropdownMenuShortcut({
+  className,
+  ...props
+}) {
+  return (
+    <span
+      data-slot="dropdown-menu-shortcut"
+      className={cn(
+        "ml-auto text-xs tracking-widest text-muted-foreground",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function DropdownMenuSub({
+  ...props
+}) {
+  return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
+}
+
+function DropdownMenuSubTrigger({
+  className,
+  inset,
+  children,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.SubTrigger
+      data-slot="dropdown-menu-sub-trigger"
+      data-inset={inset}
+      className={cn(
+        "flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[inset]:pl-8 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <ChevronRightIcon className="ml-auto size-4" />
+    </DropdownMenuPrimitive.SubTrigger>
+  )
+}
+
+function DropdownMenuSubContent({
+  className,
+  ...props
+}) {
+  return (
+    <DropdownMenuPrimitive.SubContent
+      data-slot="dropdown-menu-sub-content"
+      className={cn(
+        "z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export {
+  DropdownMenu,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+}
+</file>
+
+<file path="src/lib/utils.js">
+export function cn(...classes) {
+  return classes
+    .flatMap((item) => (typeof item === "string" ? item.split(" ") : []))
+    .filter(Boolean)
+    .join(" ");
+}
+</file>
+
+<file path="src/pages/admin/AdminLayout.jsx">
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Menu,
+  BarChart3,
+  Package,
+  ShoppingCart,
+  User,
+  Users,
+  LogOut,
+  X,
+} from "lucide-react";
+import { useState } from "react";
+
+export default function AdminLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { path: "/admin", label: "Dashboard", icon: BarChart3 },
+    { path: "/admin/orders", label: "Orders", icon: ShoppingCart },
+    { path: "/admin/products", label: "Products", icon: Package },
+    { path: "/admin/users", label: "Users", icon: Users },
+    { path: "/admin/profile", label: "Profile", icon: User },
+  ];
+
+  const handleLogout = () => {
+    navigate("/");
+  };
+
+  const isActive = (path) => location.pathname === path;
+
+  return (
+    <div className="flex h-screen bg-primary text-footer">
+      {/* Sidebar */}
+      <aside
+        className={`${
+          sidebarOpen ? "w-64" : "w-20"
+        } bg-footer transition-all duration-300 flex flex-col border-r border-accent/10`}
+      >
+        {/* Logo Section */}
+        <div className="flex items-center justify-between p-6 border-b border-accent/10">
+          <div
+            className={`flex items-center gap-3 ${!sidebarOpen && "justify-center w-full"}`}
+          >
+            <div className="w-10 h-10 bg-accent rounded flex items-center justify-center">
+              <Package className="w-6 h-6 text-primary" />
+            </div>
+            {sidebarOpen && (
+              <div>
+                <p className="font-bold text-primary font-heading">Admin</p>
+                <p className="text-xs text-primary/60">Dashboard</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation Menu */}
+        <nav className="flex-1 px-4 py-6 space-y-3 overflow-y-auto">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  isActive(item.path)
+                    ? "bg-accent text-primary"
+                    : "text-primary/70 hover:bg-accent/10 hover:text-primary"
+                }`}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                {sidebarOpen && (
+                  <span className="text-sm font-medium">{item.label}</span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Logout Button */}
+        <div className="p-4 border-t border-accent/10">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all duration-200"
+          >
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {sidebarOpen && <span className="text-sm font-medium">Logout</span>}
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Bar */}
+        <div className="flex items-center justify-between px-8 py-4 bg-primary border-b border-footer/10">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 hover:bg-hero rounded-lg transition-colors"
+          >
+            {sidebarOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="font-heading font-bold text-lg">Welcome Admin</p>
+              <p className="text-sm text-footer/60">
+                Manage your store efficiently
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <main className="flex-1 overflow-auto">
+          <div className="p-8">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/AdminProfile.jsx">
+import { User, Mail, Phone, MapPin, Edit2, Save } from "lucide-react";
+import { useState } from "react";
+
+export default function AdminProfile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState({
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    phone: "+1 (555) 123-4567",
+    location: "New York, USA",
+    bio: "Senior Admin Manager with 5+ years of experience in e-commerce",
+    joinDate: "January 2023",
+    role: "Super Admin",
+  });
+
+  const [formData, setFormData] = useState(profile);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    setFormData(profile);
+  };
+
+  const handleSave = () => {
+    setProfile(formData);
+    setIsEditing(false);
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-heading font-bold text-footer mb-2">
+          Admin Profile
+        </h1>
+        <p className="text-footer/60">Manage your account information</p>
+      </div>
+
+      {/* Profile Card */}
+      <div className="bg-primary border border-footer/10 rounded-xl overflow-hidden">
+        {/* Header Background */}
+        <div className="h-32 bg-gradient-to-r from-accent to-accent/70" />
+
+        {/* Profile Content */}
+        <div className="px-8 pb-8">
+          {/* Avatar and Name */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between -mt-16 mb-8">
+            <div className="flex items-end gap-4">
+              <div className="w-24 h-24 bg-accent rounded-full border-4 border-primary flex items-center justify-center text-white text-3xl">
+                <User className="w-12 h-12" />
+              </div>
+              <div className="mb-2">
+                <h2 className="text-3xl font-heading font-bold text-footer">
+                  {isEditing
+                    ? formData.firstName + " " + formData.lastName
+                    : profile.firstName + " " + profile.lastName}
+                </h2>
+                <p className="text-footer/60">{profile.role}</p>
+              </div>
+            </div>
+            <div>
+              {isEditing ? (
+                <button
+                  onClick={handleSave}
+                  className="flex items-center gap-2 px-6 py-3 bg-accent text-primary rounded-lg hover:opacity-90 transition-opacity font-medium"
+                >
+                  <Save className="w-5 h-5" />
+                  Save Changes
+                </button>
+              ) : (
+                <button
+                  onClick={handleEdit}
+                  className="flex items-center gap-2 px-6 py-3 bg-hero text-footer rounded-lg hover:bg-footer/5 transition-colors font-medium border border-footer/10"
+                >
+                  <Edit2 className="w-5 h-5" />
+                  Edit Profile
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Info Sections */}
+          {!isEditing ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Personal Information */}
+              <div>
+                <h3 className="text-lg font-heading font-bold text-footer mb-6">
+                  Personal Information
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <Mail className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-footer/60">Email</p>
+                      <p className="text-footer font-medium">{profile.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <Phone className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-footer/60">Phone</p>
+                      <p className="text-footer font-medium">{profile.phone}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <MapPin className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-footer/60">Location</p>
+                      <p className="text-footer font-medium">
+                        {profile.location}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Information */}
+              <div>
+                <h3 className="text-lg font-heading font-bold text-footer mb-6">
+                  Account Information
+                </h3>
+                <div className="space-y-4">
+                  <div className="bg-hero p-4 rounded-lg">
+                    <p className="text-sm text-footer/60 mb-1">Join Date</p>
+                    <p className="text-footer font-medium">
+                      {profile.joinDate}
+                    </p>
+                  </div>
+                  <div className="bg-hero p-4 rounded-lg">
+                    <p className="text-sm text-footer/60 mb-1">Role</p>
+                    <p className="text-footer font-medium">{profile.role}</p>
+                  </div>
+                  <div className="bg-hero p-4 rounded-lg">
+                    <p className="text-sm text-footer/60 mb-1">Status</p>
+                    <p className="text-footer font-medium text-green-600">
+                      Active
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-footer mb-2">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-footer mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-footer mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-footer mb-2">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-footer mb-2">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-footer mb-2">
+                  Bio
+                </label>
+                <textarea
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleChange}
+                  rows="4"
+                  className="w-full px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleSave}
+                  className="flex-1 px-6 py-3 bg-accent text-primary rounded-lg hover:opacity-90 transition-opacity font-medium"
+                >
+                  Save Changes
+                </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1 px-6 py-3 bg-hero text-footer rounded-lg hover:bg-footer/5 transition-colors font-medium border border-footer/10"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Security Settings */}
+      <div className="bg-primary border border-footer/10 rounded-xl p-8">
+        <h3 className="text-2xl font-heading font-bold text-footer mb-6">
+          Security Settings
+        </h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between pb-4 border-b border-footer/10">
+            <div>
+              <p className="font-medium text-footer">Change Password</p>
+              <p className="text-sm text-footer/60">
+                Update your password regularly
+              </p>
+            </div>
+            <button className="px-6 py-2 bg-hero text-footer rounded-lg hover:bg-footer/5 transition-colors font-medium border border-footer/10">
+              Change
+            </button>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-footer">
+                Two-Factor Authentication
+              </p>
+              <p className="text-sm text-footer/60">
+                Add an extra layer of security
+              </p>
+            </div>
+            <button className="px-6 py-2 bg-hero text-footer rounded-lg hover:bg-footer/5 transition-colors font-medium border border-footer/10">
+              Enable
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/Dashboard.jsx">
+import { BarChart3, ShoppingCart, Package, TrendingUp } from "lucide-react";
+
+export default function Dashboard() {
+  const stats = [
+    {
+      label: "Total Revenue",
+      value: "$12,459",
+      icon: TrendingUp,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+    },
+    {
+      label: "Total Orders",
+      value: "184",
+      icon: ShoppingCart,
+      color: "text-accent",
+      bgColor: "bg-accent/5",
+    },
+    {
+      label: "Total Products",
+      value: "42",
+      icon: Package,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+    },
+    {
+      label: "Page Views",
+      value: "2,847",
+      icon: BarChart3,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+    },
+  ];
+
+  const recentOrders = [
+    {
+      id: "#ORD001",
+      customer: "John Doe",
+      amount: "$89.99",
+      status: "Completed",
+      date: "2025-08-30",
+    },
+    {
+      id: "#ORD002",
+      customer: "Jane Smith",
+      amount: "$129.50",
+      status: "Pending",
+      date: "2025-08-29",
+    },
+    {
+      id: "#ORD003",
+      customer: "Mike Johnson",
+      amount: "$45.99",
+      status: "Shipped",
+      date: "2025-08-28",
+    },
+    {
+      id: "#ORD004",
+      customer: "Sarah Williams",
+      amount: "$199.99",
+      status: "Completed",
+      date: "2025-08-27",
+    },
+  ];
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Completed":
+        return "bg-green-100 text-green-700";
+      case "Pending":
+        return "bg-yellow-100 text-yellow-700";
+      case "Shipped":
+        return "bg-blue-100 text-blue-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-4xl font-heading font-bold text-footer mb-2">
+          Dashboard
+        </h1>
+        <p className="text-footer/60">Welcome to your admin dashboard</p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={index}
+              className="bg-primary border border-footer/10 rounded-xl p-6 hover:shadow-lg transition-shadow"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-footer/60 text-sm font-medium mb-2">
+                    {stat.label}
+                  </p>
+                  <p className="text-3xl font-bold font-heading text-footer">
+                    {stat.value}
+                  </p>
+                </div>
+                <div className={`${stat.bgColor} p-3 rounded-lg`}>
+                  <Icon className={`w-6 h-6 ${stat.color}`} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Recent Orders */}
+      <div className="bg-primary border border-footer/10 rounded-xl overflow-hidden">
+        <div className="p-6 border-b border-footer/10">
+          <h2 className="text-2xl font-heading font-bold text-footer">
+            Recent Orders
+          </h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-footer/10 bg-hero">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Order ID
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Customer
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Amount
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentOrders.map((order, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-footer/10 hover:bg-hero transition-colors"
+                >
+                  <td className="px-6 py-4 text-sm font-medium text-accent">
+                    {order.id}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer">
+                    {order.customer}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-footer">
+                    {order.amount}
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                        order.status,
+                      )}`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer/60">
+                    {order.date}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/OrdersManagement.jsx">
+import { Search, Edit2, Trash2, Eye } from "lucide-react";
+import { useState } from "react";
+
+export default function OrdersManagement() {
+  const [orders, setOrders] = useState([
+    {
+      id: "#ORD001",
+      customer: "John Doe",
+      email: "john@example.com",
+      amount: "$89.99",
+      status: "Completed",
+      date: "2025-08-30",
+      items: 3,
+    },
+    {
+      id: "#ORD002",
+      customer: "Jane Smith",
+      email: "jane@example.com",
+      amount: "$129.50",
+      status: "Pending",
+      date: "2025-08-29",
+      items: 2,
+    },
+    {
+      id: "#ORD003",
+      customer: "Mike Johnson",
+      email: "mike@example.com",
+      amount: "$45.99",
+      status: "Shipped",
+      date: "2025-08-28",
+      items: 1,
+    },
+    {
+      id: "#ORD004",
+      customer: "Sarah Williams",
+      email: "sarah@example.com",
+      amount: "$199.99",
+      status: "Completed",
+      date: "2025-08-27",
+      items: 5,
+    },
+    {
+      id: "#ORD005",
+      customer: "Tom Brown",
+      email: "tom@example.com",
+      amount: "$75.50",
+      status: "Cancelled",
+      date: "2025-08-26",
+      items: 2,
+    },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "All" || order.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Completed":
+        return "bg-green-100 text-green-700";
+      case "Pending":
+        return "bg-yellow-100 text-yellow-700";
+      case "Shipped":
+        return "bg-blue-100 text-blue-700";
+      case "Cancelled":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
+  const handleDelete = (id) => {
+    setOrders(orders.filter((order) => order.id !== id));
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-heading font-bold text-footer mb-2">
+          Orders Management
+        </h1>
+        <p className="text-footer/60">Manage and track all customer orders</p>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1 relative">
+          <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
+          <input
+            type="text"
+            placeholder="Search by order ID or customer name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-12 pr-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+        >
+          <option>All</option>
+          <option>Pending</option>
+          <option>Shipped</option>
+          <option>Completed</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+
+      {/* Orders Table */}
+      <div className="bg-primary border border-footer/10 rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-footer/10 bg-hero">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Order ID
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Customer
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Items
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Amount
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Date
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order) => (
+                <tr
+                  key={order.id}
+                  className="border-b border-footer/10 hover:bg-hero transition-colors"
+                >
+                  <td className="px-6 py-4 text-sm font-medium text-accent">
+                    {order.id}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="text-sm font-medium text-footer">
+                        {order.customer}
+                      </p>
+                      <p className="text-xs text-footer/60">{order.email}</p>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer">
+                    {order.items}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-footer">
+                    {order.amount}
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                        order.status,
+                      )}`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer/60">
+                    {order.date}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <button className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent">
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(order.id)}
+                        className="p-2 hover:bg-red-50 rounded-lg transition-colors text-footer/60 hover:text-red-600"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Empty State */}
+      {filteredOrders.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-footer/60 text-lg">No orders found</p>
+        </div>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/ProductsManagement.jsx">
+import { Search, Edit2, Trash2, Plus } from "lucide-react";
+import { useState } from "react";
+
+export default function ProductsManagement() {
+  const [products, setProducts] = useState([
+    {
+      id: "#PRD001",
+      name: "Premium Cotton T-Shirt",
+      category: "T-Shirts",
+      price: "$29.99",
+      stock: 45,
+      status: "In Stock",
+      image: "👕",
+    },
+    {
+      id: "#PRD002",
+      name: "Vintage Denim Jacket",
+      category: "Jackets",
+      price: "$79.99",
+      stock: 12,
+      status: "In Stock",
+      image: "🧥",
+    },
+    {
+      id: "#PRD003",
+      name: "Classic Chinos",
+      category: "Pants",
+      price: "$49.99",
+      stock: 0,
+      status: "Out of Stock",
+      image: "👖",
+    },
+    {
+      id: "#PRD004",
+      name: "Casual Hoodie",
+      category: "Hoodies",
+      price: "$59.99",
+      stock: 28,
+      status: "In Stock",
+      image: "🧢",
+    },
+    {
+      id: "#PRD005",
+      name: "Summer Dress",
+      category: "Dresses",
+      price: "$65.99",
+      stock: 8,
+      status: "Low Stock",
+      image: "👗",
+    },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.id.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "In Stock":
+        return "bg-green-100 text-green-700";
+      case "Low Stock":
+        return "bg-yellow-100 text-yellow-700";
+      case "Out of Stock":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
+  const handleDelete = (id) => {
+    setProducts(products.filter((product) => product.id !== id));
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-4xl font-heading font-bold text-footer mb-2">
+            Products Management
+          </h1>
+          <p className="text-footer/60">
+            Manage and update your product catalog
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="mt-4 md:mt-0 flex items-center gap-2 px-6 py-3 bg-accent text-primary rounded-lg hover:opacity-90 transition-opacity font-medium"
+        >
+          <Plus className="w-5 h-5" />
+          Add Product
+        </button>
+      </div>
+
+      {/* Add Product Form */}
+      {showAddForm && (
+        <div className="bg-primary border border-footer/10 rounded-xl p-6">
+          <h3 className="text-xl font-heading font-bold text-footer mb-4">
+            Add New Product
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Product Name"
+              className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+            <input
+              type="text"
+              placeholder="Category"
+              className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+            <input
+              type="text"
+              placeholder="Price"
+              className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+            <input
+              type="number"
+              placeholder="Stock"
+              className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+          </div>
+          <div className="flex gap-3 mt-4">
+            <button className="flex-1 px-6 py-2 bg-accent text-primary rounded-lg hover:opacity-90 transition-opacity font-medium">
+              Add Product
+            </button>
+            <button
+              onClick={() => setShowAddForm(false)}
+              className="flex-1 px-6 py-2 bg-hero border border-footer/10 text-footer rounded-lg hover:bg-footer/5 transition-colors font-medium"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
+        <input
+          type="text"
+          placeholder="Search by product name or ID..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full pl-12 pr-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+        />
+      </div>
+
+      {/* Products Table */}
+      <div className="bg-primary border border-footer/10 rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-footer/10 bg-hero">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Product
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Category
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Price
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Stock
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProducts.map((product) => (
+                <tr
+                  key={product.id}
+                  className="border-b border-footer/10 hover:bg-hero transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{product.image}</span>
+                      <div>
+                        <p className="text-sm font-medium text-footer">
+                          {product.name}
+                        </p>
+                        <p className="text-xs text-footer/60">{product.id}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer">
+                    {product.category}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-footer">
+                    {product.price}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer">
+                    {product.stock}
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                        product.status,
+                      )}`}
+                    >
+                      {product.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <button className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent">
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="p-2 hover:bg-red-50 rounded-lg transition-colors text-footer/60 hover:text-red-600"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Empty State */}
+      {filteredProducts.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-footer/60 text-lg">No products found</p>
+        </div>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/UsersManagement.jsx">
+import { Search, Edit2, Trash2, Eye, Mail, Phone, MapPin } from "lucide-react";
+import { useState } from "react";
+
+export default function UsersManagement() {
+  const [users, setUsers] = useState([
+    {
+      id: "#USR001",
+      name: "Sarah Anderson",
+      email: "sarah@example.com",
+      phone: "+1 (555) 123-4567",
+      location: "New York, USA",
+      joinDate: "2025-08-15",
+      orders: 5,
+      totalSpent: "$450.50",
+      status: "Active",
+      verified: true,
+    },
+    {
+      id: "#USR002",
+      name: "Michael Chen",
+      email: "michael@example.com",
+      phone: "+1 (555) 234-5678",
+      location: "Los Angeles, USA",
+      joinDate: "2025-08-20",
+      orders: 3,
+      totalSpent: "$289.99",
+      status: "Active",
+      verified: true,
+    },
+    {
+      id: "#USR003",
+      name: "Emma Wilson",
+      email: "emma@example.com",
+      phone: "+1 (555) 345-6789",
+      location: "Chicago, USA",
+      joinDate: "2025-08-25",
+      orders: 1,
+      totalSpent: "$79.99",
+      status: "Active",
+      verified: false,
+    },
+    {
+      id: "#USR004",
+      name: "David Martinez",
+      email: "david@example.com",
+      phone: "+1 (555) 456-7890",
+      location: "Houston, USA",
+      joinDate: "2025-08-10",
+      orders: 8,
+      totalSpent: "$1,205.50",
+      status: "Active",
+      verified: true,
+    },
+    {
+      id: "#USR005",
+      name: "Jessica Taylor",
+      email: "jessica@example.com",
+      phone: "+1 (555) 567-8901",
+      location: "Phoenix, USA",
+      joinDate: "2025-07-30",
+      orders: 0,
+      totalSpent: "$0.00",
+      status: "Inactive",
+      verified: true,
+    },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.id.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "All" || user.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const getStatusColor = (status) => {
+    return status === "Active"
+      ? "bg-green-100 text-green-700"
+      : "bg-gray-100 text-gray-700";
+  };
+
+  const handleDelete = (id) => {
+    setUsers(users.filter((user) => user.id !== id));
+  };
+
+  const handleVerify = (id) => {
+    setUsers(
+      users.map((user) =>
+        user.id === id ? { ...user, verified: !user.verified } : user,
+      ),
+    );
+  };
+
+  const handleStatusChange = (id, newStatus) => {
+    setUsers(
+      users.map((user) =>
+        user.id === id ? { ...user, status: newStatus } : user,
+      ),
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-heading font-bold text-footer mb-2">
+          Users Management
+        </h1>
+        <p className="text-footer/60">
+          Manage and monitor registered customers
+        </p>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1 relative">
+          <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
+          <input
+            type="text"
+            placeholder="Search by name, email, or user ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-12 pr-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+        >
+          <option>All</option>
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+      </div>
+
+      {/* Users Table */}
+      <div className="bg-primary border border-footer/10 rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-footer/10 bg-hero">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  User ID
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Name
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Email
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Joined
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Orders
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Total Spent
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-footer">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr
+                  key={user.id}
+                  className="border-b border-footer/10 hover:bg-hero transition-colors"
+                >
+                  <td className="px-6 py-4 text-sm font-medium text-accent">
+                    {user.id}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer font-medium">
+                    {user.name}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer/80">
+                    {user.email}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-footer/60">
+                    {user.joinDate}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-footer">
+                    {user.orders}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-footer">
+                    {user.totalSpent}
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                        user.status,
+                      )}`}
+                    >
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setSelectedUser(user)}
+                        className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent"
+                        title="View details"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleStatusChange(
+                            user.id,
+                            user.status === "Active" ? "Inactive" : "Active",
+                          )
+                        }
+                        className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent"
+                        title="Change status"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        className="p-2 hover:bg-red-50 rounded-lg transition-colors text-footer/60 hover:text-red-600"
+                        title="Delete user"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Empty State */}
+      {filteredUsers.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-footer/60 text-lg">No users found</p>
+        </div>
+      )}
+
+      {/* User Detail Modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-primary rounded-xl max-w-md w-full">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-footer/10 flex items-center justify-between">
+              <h3 className="text-xl font-heading font-bold text-footer">
+                User Details
+              </h3>
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="text-footer/60 hover:text-footer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="px-6 py-6 space-y-4">
+              {/* Name */}
+              <div>
+                <p className="text-sm text-footer/60 font-medium mb-1">Name</p>
+                <p className="text-footer font-semibold">{selectedUser.name}</p>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-footer/60 font-medium">Email</p>
+                  <p className="text-footer">{selectedUser.email}</p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-footer/60 font-medium">Phone</p>
+                  <p className="text-footer">{selectedUser.phone}</p>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-footer/60 font-medium">Location</p>
+                  <p className="text-footer">{selectedUser.location}</p>
+                </div>
+              </div>
+
+              {/* Join Date */}
+              <div className="bg-hero p-3 rounded-lg">
+                <p className="text-sm text-footer/60 font-medium mb-1">
+                  Join Date
+                </p>
+                <p className="text-footer">{selectedUser.joinDate}</p>
+              </div>
+
+              {/* Orders & Spending */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-hero p-3 rounded-lg">
+                  <p className="text-sm text-footer/60 font-medium mb-1">
+                    Total Orders
+                  </p>
+                  <p className="text-2xl font-bold text-accent">
+                    {selectedUser.orders}
+                  </p>
+                </div>
+                <div className="bg-hero p-3 rounded-lg">
+                  <p className="text-sm text-footer/60 font-medium mb-1">
+                    Total Spent
+                  </p>
+                  <p className="text-lg font-bold text-accent">
+                    {selectedUser.totalSpent}
+                  </p>
+                </div>
+              </div>
+
+              {/* Verification Status */}
+              <div className="flex items-center justify-between bg-hero p-3 rounded-lg">
+                <div>
+                  <p className="text-sm text-footer/60 font-medium">
+                    Email Verified
+                  </p>
+                  <p className="text-footer">
+                    {selectedUser.verified ? "✓ Verified" : "✗ Not Verified"}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    handleVerify(selectedUser.id);
+                    setSelectedUser({
+                      ...selectedUser,
+                      verified: !selectedUser.verified,
+                    });
+                  }}
+                  className="px-3 py-1 bg-accent text-primary rounded text-xs font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Toggle
+                </button>
+              </div>
+
+              {/* Account Status */}
+              <div>
+                <p className="text-sm text-footer/60 font-medium mb-2">
+                  Account Status
+                </p>
+                <select
+                  value={selectedUser.status}
+                  onChange={(e) => {
+                    handleStatusChange(selectedUser.id, e.target.value);
+                    setSelectedUser({
+                      ...selectedUser,
+                      status: e.target.value,
+                    });
+                  }}
+                  className="w-full px-3 py-2 bg-hero border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-footer/10 flex gap-3">
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="flex-1 px-4 py-2 bg-hero text-footer rounded-lg hover:bg-footer/5 transition-colors font-medium"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  handleDelete(selectedUser.id);
+                  setSelectedUser(null);
+                }}
+                className="flex-1 px-4 py-2 bg-red-500/10 text-red-600 rounded-lg hover:bg-red-500/20 transition-colors font-medium"
+              >
+                Delete User
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/Landing-page.jsx">
+// import TopBar from "../compenants/TopBar";
+import NavBar from "../compenants/NavBar";
+import Hero from "../compenants/Hero";
+import InfoStrip from "../compenants/InfoStrip";
+import CategorySection from "../compenants/CategorySection";
+import PromoSection from "../compenants/PromoSection";
+import NewArrivalsSection from "../compenants/NewArrivalsSection";
+import Newsletter from "../compenants/Newsletter";
+import Footer from "../compenants/Footer";
+import { useRef } from "react";
+
+export default function LandingPage() {
+  const newArrivalsRef = useRef(null);
+  const scrollToNewArrivals = () => {
+    newArrivalsRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  return (
+    <div className="min-h-screen bg-primary text-footer overflow-x-clip">
+      {/* <TopBar /> */}
+      <NavBar onNewArrivalsClick={scrollToNewArrivals} />
+      <main>
+        <Hero />
+        <InfoStrip />
+        <CategorySection />
+        <div ref={newArrivalsRef}>
+          <NewArrivalsSection />
+        </div>
+        <PromoSection />
+        <Newsletter />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/ShoppingProducts.jsx">
+import { Search, Filter, X } from "lucide-react";
+import { useState } from "react";
+import NavBar from "../compenants/NavBar";
+import Footer from "../compenants/Footer";
+
+export default function ShoppingProducts() {
+  const [filters, setFilters] = useState({
+    category: [],
+    priceRange: "all",
+    inStock: false,
+  });
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const products = [
+    {
+      id: 1,
+      name: "Premium Cotton T-Shirt",
+      category: "T-Shirts",
+      price: 29.99,
+      stock: 45,
+      rating: 4.5,
+      image: "👕",
+    },
+    {
+      id: 2,
+      name: "Vintage Denim Jacket",
+      category: "Jackets",
+      price: 79.99,
+      stock: 12,
+      rating: 4.8,
+      image: "🧥",
+    },
+    {
+      id: 3,
+      name: "Classic Chinos",
+      category: "Pants",
+      price: 49.99,
+      stock: 0,
+      rating: 4.3,
+      image: "👖",
+    },
+    {
+      id: 4,
+      name: "Casual Hoodie",
+      category: "Hoodies",
+      price: 59.99,
+      stock: 28,
+      rating: 4.6,
+      image: "🧢",
+    },
+    {
+      id: 5,
+      name: "Summer Dress",
+      category: "Dresses",
+      price: 65.99,
+      stock: 8,
+      rating: 4.4,
+      image: "👗",
+    },
+    {
+      id: 6,
+      name: "Sports Polo",
+      category: "Polos",
+      price: 39.99,
+      stock: 35,
+      rating: 4.2,
+      image: "👕",
+    },
+  ];
+
+  const categories = [
+    "T-Shirts",
+    "Jackets",
+    "Pants",
+    "Hoodies",
+    "Dresses",
+    "Polos",
+  ];
+
+  const handleCategoryChange = (category) => {
+    setFilters((prev) => ({
+      ...prev,
+      category: prev.category.includes(category)
+        ? prev.category.filter((c) => c !== category)
+        : [...prev.category, category],
+    }));
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      filters.category.length === 0 ||
+      filters.category.includes(product.category);
+    const matchesStock = !filters.inStock || product.stock > 0;
+    const matchesPrice =
+      filters.priceRange === "all" ||
+      (filters.priceRange === "low" && product.price < 50) ||
+      (filters.priceRange === "mid" &&
+        product.price >= 50 &&
+        product.price < 80) ||
+      (filters.priceRange === "high" && product.price >= 80);
+
+    return matchesSearch && matchesCategory && matchesStock && matchesPrice;
+  });
+
+  return (
+    <div className="min-h-screen bg-primary text-footer">
+      {/* Header */}
+      {/* <div className="bg-hero border-b border-footer/10 px-6 py-8">
+        <div className="max-w-[1400px] mx-auto">
+          <h1 className="text-4xl font-heading font-bold mb-2">
+            Our Collection
+          </h1>
+          <p className="text-footer/60">
+            Browse our premium clothing selection
+          </p>
+        </div>
+      </div> */}
+      <NavBar />
+
+      {/* Main Content */}
+      <div className="max-w-[1400px] mx-auto px-6 py-8">
+        <div className="flex gap-8">
+          {/* Sidebar */}
+          <aside
+            className={`${
+              sidebarOpen ? "w-64" : "w-0"
+            } transition-all duration-300 overflow-hidden`}
+          >
+            <div className="bg-primary border border-footer/10 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-heading font-bold text-footer flex items-center gap-2">
+                  <Filter className="w-5 h-5" />
+                  Filters
+                </h2>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="md:hidden p-1 hover:bg-hero rounded"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Search */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-footer mb-2">
+                  Search
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-2.5 w-4 h-4 text-footer/40" />
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* Categories */}
+              <div className="mb-6 pb-6 border-b border-footer/10">
+                <h3 className="font-medium text-footer mb-3">Categories</h3>
+                <div className="space-y-2">
+                  {categories.map((category) => (
+                    <label
+                      key={category}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={filters.category.includes(category)}
+                        onChange={() => handleCategoryChange(category)}
+                        className="w-4 h-4 rounded accent-accent cursor-pointer"
+                      />
+                      <span className="text-sm text-footer">{category}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Range */}
+              <div className="mb-6 pb-6 border-b border-footer/10">
+                <h3 className="font-medium text-footer mb-3">Price Range</h3>
+                <div className="space-y-2">
+                  {[
+                    { value: "all", label: "All Prices" },
+                    { value: "low", label: "Under $50" },
+                    { value: "mid", label: "$50 - $80" },
+                    { value: "high", label: "$80+" },
+                  ].map((range) => (
+                    <label
+                      key={range.value}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="price"
+                        value={range.value}
+                        checked={filters.priceRange === range.value}
+                        onChange={(e) =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            priceRange: e.target.value,
+                          }))
+                        }
+                        className="w-4 h-4 accent-accent cursor-pointer"
+                      />
+                      <span className="text-sm text-footer">{range.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stock */}
+              <div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={filters.inStock}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        inStock: e.target.checked,
+                      }))
+                    }
+                    className="w-4 h-4 accent-accent cursor-pointer"
+                  />
+                  <span className="text-sm text-footer">In Stock Only</span>
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          {/* Products Grid */}
+          <div className="flex-1">
+            {/* Toggle Sidebar Button */}
+            {!sidebarOpen && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="mb-4 p-2 bg-hero rounded-lg hover:bg-footer/5 transition-colors flex items-center gap-2"
+              >
+                <Filter className="w-5 h-5" />
+                Show Filters
+              </button>
+            )}
+
+            {/* Results Info */}
+            <div className="mb-6">
+              <p className="text-footer/60">
+                Showing {filteredProducts.length} of {products.length} products
+              </p>
+            </div>
+
+            {/* Products */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="bg-primary border border-footer/10 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group"
+                >
+                  {/* Product Image */}
+                  <div className="relative bg-hero h-48 flex items-center justify-center overflow-hidden">
+                    <div className="text-6xl group-hover:scale-110 transition-transform duration-300">
+                      {product.image}
+                    </div>
+                    {product.stock === 0 && (
+                      <div className="absolute inset-0 bg-footer/50 flex items-center justify-center">
+                        <span className="text-primary font-bold text-lg">
+                          Out of Stock
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="p-4">
+                    <p className="text-xs text-footer/60 uppercase tracking-wide mb-2">
+                      {product.category}
+                    </p>
+                    <h3 className="font-heading font-bold text-footer mb-2 text-lg">
+                      {product.name}
+                    </h3>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <span
+                            key={i}
+                            className={
+                              i < Math.floor(product.rating)
+                                ? "text-yellow-500"
+                                : "text-footer/20"
+                            }
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-xs text-footer/60">
+                        ({product.rating})
+                      </span>
+                    </div>
+
+                    {/* Price and Stock */}
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-2xl font-bold font-heading text-accent">
+                        ${product.price}
+                      </p>
+                      <p className="text-xs text-footer/60">
+                        {product.stock > 0 ? `${product.stock} left` : "N/A"}
+                      </p>
+                    </div>
+
+                    {/* Button */}
+                    <button
+                      disabled={product.stock === 0}
+                      className="w-full py-2 bg-accent text-primary rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                    >
+                      {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Empty State */}
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-16">
+                <p className="text-lg text-footer/60">No products found</p>
+                <p className="text-sm text-footer/40 mt-2">
+                  Try adjusting your filters
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+}
+</file>
+
+<file path="src/App.css">
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-primary);
+  color: var(--color-footer);
+  font-family: var(--font-body), sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+</file>
+
+<file path="src/App.jsx">
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/Landing-page";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import OrdersManagement from "./pages/admin/OrdersManagement";
+import ProductsManagement from "./pages/admin/ProductsManagement";
+import AdminProfile from "./pages/admin/AdminProfile";
+import UsersManagement from "./pages/admin/UsersManagement";
+import ShoppingProducts from "./pages/ShoppingProducts";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="orders" element={<OrdersManagement />} />
+          <Route path="products" element={<ProductsManagement />} />
+          <Route path="users" element={<UsersManagement />} />
+          <Route path="profile" element={<AdminProfile />} />
+        </Route>
+        <Route path="/shop" element={<ShoppingProducts />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+</file>
+
+<file path="src/index.css">
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #fefefe;
+  --color-footer: #050405;
+  --color-hero: #f8f8fa;
+  --color-accent: #06563f;
+
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Lato", sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+}
+</file>
+
+<file path="src/main.jsx">
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="components.json">
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": false,
+  "tailwind": {
+    "config": "",
+    "css": "src/index.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  }
+}
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{js,jsx}'],
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+  },
+])
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>clothing-shop</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="jsconfig.json">
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "clothing-shop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^1.38.0",
+    "radix-ui": "^1.6.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@eslint/js": "^10.0.1",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^10.9.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.4",
+    "globals": "^17.11.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.2"
+  }
+}
+</file>
+
+<file path="README.md">
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+
+Note: This will impact Vite dev & build performances.
+You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+</file>
+
+<file path="vite.config.js">
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+    babel({ presets: [reactCompilerPreset()] }),
+  ],
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});
+</file>
+
+</files>
