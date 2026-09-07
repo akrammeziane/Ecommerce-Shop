@@ -62,26 +62,6 @@ function App() {
     <>
       <RouterProvider router={router} />
     </>
-    // <Router>
-    //   <Routes>
-    //     <Route path="/" element={<LandingPage />} />
-    //     <Route path="/admin" element={<AdminLayout />}>
-    //       <Route index element={<Dashboard />} />
-    //       <Route path="orders" element={<OrdersManagement />} />
-    //       <Route path="products" element={<ProductsManagement />} />
-    //       <Route path="users" element={<UsersManagement />} />
-    //       <Route path="profile" element={<AdminProfile />} />
-    //     </Route>
-    //     <Route path="/shop" element={<ShoppingProducts />} />
-    //     <Route path="/product" element={<ProductDetail />} />
-    //     <Route path="/checkout" element={<Checkout />} />
-    //     <Route path="/cart" element={<Cart />} />
-
-    //     <Route path="/login" element={<Login />} />
-    //     <Route path="/Register" element={<Register />} />
-    //     <Route path="/account" element={<ClientDashboard />} />
-    //   </Routes>
-    // </Router>
   );
 }
 

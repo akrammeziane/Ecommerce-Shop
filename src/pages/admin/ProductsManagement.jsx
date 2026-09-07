@@ -6,15 +6,16 @@ import {
   X,
   CheckCircle2,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addProduct,
   deleteProduct,
   editProduct,
   fetchProducts,
-} from "@/slices/productSlice";
+} from "@/slices/productsSlice";
 
 const availableSizeOptions = ["S", "M", "L", "XL", "XXL", "XXXL"];
 
@@ -37,92 +38,31 @@ export default function ProductsManagement() {
   }, [dispatch]);
 
   const productsFromStore = useSelector(
-    (state) => state.product?.products || [],
+    (state) => state.products?.products || [],
   );
-  console.log("the products from store is ", productsFromStore);
+  const loading = useSelector((state) => state.products?.loading);
 
-  const products = productsFromStore?.map((product) => ({
-    id: product._id,
-    name: product.name,
-    category: product.category,
-    description: product.description,
-    availableSizes: product.availableSizes,
-    availableColors: product.availableColors,
-    price: `${Number(product.price).toFixed(2)} dzd`,
-    stock: product.quantity,
-    status:
-      product.quantity === 0
-        ? "Out of Stock"
-        : product.quantity < 10
-          ? "Low Stock"
-          : "In Stock",
-    image: "🛍️",
-  }));
-  console.log("the products from store is ", products);
-  // const [products, setProducts] = useState(productsWithoutMeta || []);
-  // const [products, setProducts] = useState([
-  //   {
-  //     id: "#PRD001",
-  //     name: "Premium Cotton T-Shirt",
-  //     description: "A soft everyday cotton t-shirt.",
-  //     category: "T-Shirts",
-  //     price: "$29.99",
-  //     stock: 45,
-  //     status: "In Stock",
-  //     image: "👕",
-  //     availableSizes: ["S", "M", "L", "XL"],
-  //     availableColors: ["Black", "White"],
-  //   },
-  //   {
-  //     id: "#PRD002",
-  //     name: "Vintage Denim Jacket",
-  //     description: "A relaxed vintage denim jacket.",
-  //     category: "Jackets",
-  //     price: "$79.99",
-  //     stock: 12,
-  //     status: "In Stock",
-  //     image: "🧥",
-  //     availableSizes: ["M", "L", "XL"],
-  //     availableColors: ["Blue"],
-  //   },
-  //   {
-  //     id: "#PRD003",
-  //     name: "Classic Chinos",
-  //     description: "Classic chinos for everyday wear.",
-  //     category: "Pants",
-  //     price: "$49.99",
-  //     stock: 0,
-  //     status: "Out of Stock",
-  //     image: "👖",
-  //     availableSizes: ["S", "M", "L", "XL", "XXL"],
-  //     availableColors: ["Khaki", "Navy"],
-  //   },
-  //   {
-  //     id: "#PRD004",
-  //     name: "Casual Hoodie",
-  //     description: "A comfortable casual hoodie.",
-  //     category: "Hoodies",
-  //     price: "$59.99",
-  //     stock: 28,
-  //     status: "In Stock",
-  //     image: "🧢",
-  //     availableSizes: ["M", "L", "XL"],
-  //     availableColors: ["Gray", "Black"],
-  //   },
-  //   {
-  //     id: "#PRD005",
-  //     name: "Summer Dress",
-  //     description: "A lightweight summer dress.",
-  //     category: "Dresses",
-  //     price: "$65.99",
-  //     stock: 8,
-  //     status: "Low Stock",
-  //     image: "👗",
-  //     availableSizes: ["S", "M", "L"],
-  //     availableColors: ["White", "Pink"],
-  //   },
-  // ]);
-
+  const products = useMemo(
+    () =>
+      productsFromStore?.map((product) => ({
+        id: product._id,
+        name: product.name,
+        category: product.category,
+        description: product.description,
+        availableSizes: product.availableSizes,
+        availableColors: product.availableColors,
+        price: `${Number(product.price).toFixed(2)} dzd`,
+        stock: product.quantity,
+        status:
+          product.quantity === 0
+            ? "Out of Stock"
+            : product.quantity < 10
+              ? "Low Stock"
+              : "In Stock",
+        image: "🛍️",
+      })),
+    [productsFromStore],
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [productForm, setProductForm] = useState(initialProductForm);
@@ -135,10 +75,14 @@ export default function ProductsManagement() {
     message: "",
   });
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.id.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredProducts = useMemo(
+    () =>
+      products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.id.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    [products, searchTerm],
   );
 
   const getStatusColor = (status) => {
@@ -153,14 +97,19 @@ export default function ProductsManagement() {
         return "bg-gray-100 text-gray-700";
     }
   };
+  const CATEGORY_OPTIONS = [
+    "T-Shirts",
+    "Jackets",
+    "Pants",
+    "Hoodies",
+    "Accessories",
+    "Shoes",
+  ];
 
   const handleDelete = async (id) => {
     setActionFeedback({ type: "", message: "" });
     try {
       await dispatch(deleteProduct(id)).unwrap();
-      // setProducts((currentProducts) =>
-      //   currentProducts.filter((product) => product.id !== id),
-      // );
       setActionFeedback({
         type: "success",
         message: "Product deleted successfully.",
@@ -237,7 +186,9 @@ export default function ProductsManagement() {
           productId: editingProduct.id,
           productData: {
             name: editForm.name.trim(),
-            description: editForm.description.trim(),
+            description: editForm.description
+              ? editForm.description.trim()
+              : undefined,
             category: editForm.category.trim(),
             price: Number(editForm.price),
             quantity: quantity,
@@ -247,31 +198,6 @@ export default function ProductsManagement() {
           },
         }),
       ).unwrap();
-      // dispatch(handleEdit({ productId: editingProduct.id, updatedProduct }));
-      // setProducts((currentProducts) =>
-      //   currentProducts.map((product) =>
-      //     product.id === editingProduct.id
-      //       ? {
-      //           ...product,
-      //           name: updatedProduct.name || editForm.name.trim(),
-      //           description:
-      //             updatedProduct.description || editForm.description.trim(),
-      //           category: updatedProduct.category || editForm.category.trim(),
-      //           price: `dzd ${Number(updatedProduct.price || editForm.price).toFixed(2)}`,
-      //           stock: updatedProduct.quantity || quantity,
-      //           status:
-      //             (updatedProduct.quantity || quantity) === 0
-      //               ? "Out of Stock"
-      //               : (updatedProduct.quantity || quantity) < 10
-      //                 ? "Low Stock"
-      //                 : "In Stock",
-      //           image: updatedProduct.image?.trim() || product.image,
-      //           availableSizes: updatedProduct.availableSizes,
-      //           availableColors: updatedProduct.availableColors,
-      //         }
-      //       : product,
-      //   ),
-      // );
       closeEditModal();
       setActionFeedback({
         type: "success",
@@ -333,30 +259,6 @@ export default function ProductsManagement() {
           quantity: Number(productForm.quantity),
         }),
       ).unwrap();
-      // dispatch(handleAdd(createdProduct));
-
-      // setProducts((currentProducts) => [
-      //   ...currentProducts,
-      //   {
-      //     id:
-      //       createdProduct.id ||
-      //       `#PRD${String(currentProducts.length + 1).padStart(3, "0")}`,
-      //     name: createdProduct.name || productForm.name.trim(),
-      //     description:
-      //       createdProduct.description || productForm.description?.trim(),
-      //     availableSizes:
-      //       createdProduct.availableSizes || productForm.availableSizes,
-      //     availableColors: createdProduct.availableColors || colors,
-      //     category: createdProduct.category || productForm.category.trim(),
-      //     price: `dzd ${Number(createdProduct.price ?? productForm.price).toFixed(2)}`,
-      //     stock: createdProduct.quantity ?? Number(productForm.quantity),
-      //     status:
-      //       (createdProduct.quantity ?? Number(productForm.quantity)) > 0
-      //         ? "In Stock"
-      //         : "Out of Stock",
-      //     image: "🛍️",
-      //   },
-      // ]);
       setProductForm(initialProductForm);
       setShowAddForm(false);
       setActionFeedback({
@@ -441,15 +343,22 @@ export default function ProductsManagement() {
                 required
                 className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
               />
-              <input
+              <select
                 name="category"
-                type="text"
-                placeholder="Category"
                 value={productForm.category}
                 onChange={handleFormChange}
                 required
-                className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
-              />
+                className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer"
+              >
+                <option value="" disabled>
+                  Select Category
+                </option>
+                {CATEGORY_OPTIONS.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
               <input
                 name="price"
                 type="number"
@@ -473,7 +382,7 @@ export default function ProductsManagement() {
               />
               <textarea
                 name="description"
-                placeholder="Description"
+                placeholder="Description (optional)"
                 value={productForm.description}
                 onChange={handleFormChange}
                 minLength={2}
@@ -578,74 +487,85 @@ export default function ProductsManagement() {
               </tr>
             </thead>
             <tbody>
-              {filteredProducts.map((product) => (
-                <tr
-                  key={product.id}
-                  className="border-b border-footer/10 hover:bg-hero transition-colors"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{product.image}</span>
-                      <div>
-                        <p className="text-sm font-medium text-footer">
-                          {product.name}
-                        </p>
-                        <p className="text-xs text-footer/60">{product.id}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-footer">
-                    {product.category}
-                  </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-footer">
-                    {product.price}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-footer">
-                    {product.stock}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                        product.status,
-                      )}`}
-                    >
-                      {product.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => openEditModal(product)}
-                        aria-label={`Edit ${product.name}`}
-                        className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(product.id)}
-                        aria-label={`Delete ${product.name}`}
-                        className="p-2 hover:bg-red-50 rounded-lg transition-colors text-footer/60 hover:text-red-600"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+              {loading ? (
+                <tr>
+                  <td colSpan="6" className="px-6 py-12">
+                    <div className="flex items-center justify-center">
+                      <Loader2
+                        className="h-8 w-8 animate-spin text-accent"
+                        aria-label="Loading products"
+                      />
                     </div>
                   </td>
                 </tr>
-              ))}
+              ) : filteredProducts.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-12">
+                    <p className="text-footer/60 text-lg">No products found</p>
+                  </td>
+                </tr>
+              ) : (
+                filteredProducts.map((product) => (
+                  <tr
+                    key={product.id}
+                    className="border-b border-footer/10 hover:bg-hero transition-colors"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">{product.image}</span>
+                        <div>
+                          <p className="text-sm font-medium text-footer">
+                            {product.name}
+                          </p>
+                          <p className="text-xs text-footer/60">{product.id}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-footer">
+                      {product.category}
+                    </td>
+                    <td className="px-6 py-4 text-sm font-semibold text-footer">
+                      {product.price}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-footer">
+                      {product.stock}
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                          product.status,
+                        )}`}
+                      >
+                        {product.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(product)}
+                          aria-label={`Edit ${product.name}`}
+                          className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(product.id)}
+                          aria-label={`Delete ${product.name}`}
+                          className="p-2 hover:bg-red-50 rounded-lg transition-colors text-footer/60 hover:text-red-600"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
-
-      {/* Empty State */}
-      {filteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-footer/60 text-lg">No products found</p>
-        </div>
-      )}
-
       {editingProduct && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-footer/50 p-4"
@@ -692,15 +612,22 @@ export default function ProductsManagement() {
                   required
                   className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
                 />
-                <input
+                <select
                   name="category"
-                  type="text"
-                  placeholder="Category"
                   value={editForm.category}
                   onChange={handleEditFormChange}
                   required
-                  className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
-                />
+                  className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer"
+                >
+                  <option value="" disabled>
+                    Select Category
+                  </option>
+                  {CATEGORY_OPTIONS.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
                 <input
                   name="price"
                   type="number"
@@ -724,7 +651,7 @@ export default function ProductsManagement() {
                 />
                 <textarea
                   name="description"
-                  placeholder="Description"
+                  placeholder="Description (optional)"
                   value={editForm.description}
                   onChange={handleEditFormChange}
                   minLength={2}

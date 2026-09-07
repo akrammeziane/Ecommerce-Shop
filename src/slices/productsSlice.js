@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "@/api/axiosInstance";
 
 export const fetchProducts = createAsyncThunk(
-  "product/fetchProducts",
+  "products/fetchProducts",
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.get("/products");
@@ -17,7 +17,7 @@ export const fetchProducts = createAsyncThunk(
   },
 );
 export const addProduct = createAsyncThunk(
-  "product/addProduct",
+  "products/addProduct",
   async (productData, { rejectWithValue }) => {
     console.log("the product data is ", productData);
     try {
@@ -33,7 +33,7 @@ export const addProduct = createAsyncThunk(
   },
 );
 export const deleteProduct = createAsyncThunk(
-  "product/deleteProduct",
+  "products/deleteProduct",
   async (productId, { rejectWithValue }) => {
     try {
       const response = await API.delete(`/products/${productId}`);
@@ -48,7 +48,7 @@ export const deleteProduct = createAsyncThunk(
   },
 );
 export const editProduct = createAsyncThunk(
-  "product/editProduct",
+  "products/editProduct",
   async ({ productId, productData }, { rejectWithValue }) => {
     try {
       const response = await API.put(`/products/${productId}`, productData);
@@ -63,52 +63,28 @@ export const editProduct = createAsyncThunk(
   },
 );
 
-const productSlice = createSlice({
-  name: "product",
+const productsSlice = createSlice({
+  name: "products",
   initialState: {
     products: [],
     loading: false,
     error: null,
   },
-  reducers: {
-    // handleAdd: (state, action) => {
-    //   state.products.push(action.payload);
-    // },
-    // handleDelete: (state, action) => {
-    //   state.products = state.products.filter(
-    //     (product) => product.id !== action.payload,
-    //   );
-    // },
-    // handleEdit: (state, action) => {
-    //   const { productId, updatedProduct } = action.payload;
-    //   const index = state.products.findIndex(
-    //     (product) => product.id === productId,
-    //   );
-    //   if (index !== -1) {
-    //     state.products[index] = {
-    //       ...state.products[index],
-    //       ...updatedProduct,
-    //     };
-    //   }
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
-        console.log("Fetch pending...");
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
         state.products = action.payload;
-        console.log("Fetched products:", action.payload); // Log the fetched products for debugging
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        console.log("Fetch failed with error:", action.payload);
       })
       .addCase(addProduct.pending, (state) => {
         state.loading = true;
@@ -156,6 +132,4 @@ const productSlice = createSlice({
   },
 });
 
-// export const { handleAdd, handleDelete, handleEdit } = productSlice.actions;
-
-export default productSlice.reducer;
+export default productsSlice.reducer;

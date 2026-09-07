@@ -9,13 +9,13 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useState } from "react";
-import { editUser } from "../../slices/adminSlice";
+import { editUser } from "../../slices/usersSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 export default function AdminProfile() {
   const [isEditing, setIsEditing] = useState(false);
-  const { loading, error } = useSelector((state) => state.admin);
+  const { loading, error } = useSelector((state) => state.users);
   const SavedUser = JSON.parse(localStorage.getItem("user"));
   const { name, email, createdAt, phone, address } = SavedUser || {};
   const isoString = createdAt || new Date().toISOString();
@@ -34,15 +34,6 @@ export default function AdminProfile() {
     role: "Super Admin",
     phone: phone || "N/A",
     address: address || "N/A",
-    // bio: "Senior Admin Manager with 5+ years of experience in e-commerce",
-    // firstName: "John",
-
-    // lastName: "Doe",
-    // email: "john.doe@example.com",
-
-    // location: "New York, USA",
-    // bio: "Senior Admin Manager with 5+ years of experience in e-commerce",
-    // joinDate: "January 2023",
   });
 
   const [formData, setFormData] = useState(profile);

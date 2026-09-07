@@ -10,19 +10,17 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-  const items = ["HOODIES", "T-SHIRTS", "PANTS", "JACKETS", "ACCESSORIES"];
+  const items = [
+    "T-Shirts",
+    "Jackets",
+    "Pants",
+    "Hoodies",
+    "Accessories",
+    "Shoes",
+  ];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const navigate = useNavigate();
-  // const scrollToSection = (sectionId) => {
-  //   console.log(sectionId);
-  //   const section = document.getElementById(sectionId);
-  //   console.log(section);
-  //   if (section) {
-  //     section.scrollIntoView({ behavior: "smooth" });
-  //     setMobileMenuOpen(false);
-  //   }
-  // };
 
   return (
     <header className="border-b border-black/10 bg-primary">
@@ -103,6 +101,7 @@ export default function NavBar() {
           </button>
           <button
             aria-label="Shopping cart"
+            onClick={() => navigate("/cart")}
             className="relative rounded-full p-2 transition hover:bg-black/5"
           >
             <ShoppingCart size={18} />
