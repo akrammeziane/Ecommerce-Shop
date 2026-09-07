@@ -8,7 +8,6 @@ API.interceptors.request.use((config) => {
   if (token) {
     config.headers.token = token;
   }
-  console.log("Axios Request Config:", config); // Log the request configuration for debugging
   return config;
 });
 export default API;

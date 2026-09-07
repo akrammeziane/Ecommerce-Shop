@@ -54,66 +54,67 @@ export const editOrderStatus = createAsyncThunk(
  MANAGE PRODUCTS
 */
 
-export const fetchProducts = createAsyncThunk(
-  "admin/fetchProducts",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await API.get("/products");
-      return response.data;
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to fetch products";
-      return rejectWithValue(errorMessage);
-    }
-  },
-);
-export const addProduct = createAsyncThunk(
-  "admin/addProduct",
-  async (productData, { rejectWithValue }) => {
-    try {
-      const response = await API.post("/products", productData);
-      return response.data;
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to add product";
-      return rejectWithValue(errorMessage);
-    }
-  },
-);
-export const deleteProduct = createAsyncThunk(
-  "admin/deleteProduct",
-  async (productId, { rejectWithValue }) => {
-    try {
-      const response = await API.delete(`/products/${productId}`);
-      return response.data;
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to delete product";
-      return rejectWithValue(errorMessage);
-    }
-  },
-);
-export const editProduct = createAsyncThunk(
-  "admin/editProduct",
-  async ({ productId, productData }, { rejectWithValue }) => {
-    try {
-      const response = await API.put(`/products/${productId}`, productData);
-      return response.data;
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to update product";
-      return rejectWithValue(errorMessage);
-    }
-  },
-);
+// export const fetchProducts = createAsyncThunk(
+//   "admin/fetchProducts",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await API.get("/products");
+//       return response.data;
+//     } catch (error) {
+//       const errorMessage =
+//         error.response?.data?.message ||
+//         error.message ||
+//         "Failed to fetch products";
+//       return rejectWithValue(errorMessage);
+//     }
+//   },
+// );
+// export const addProduct = createAsyncThunk(
+//   "admin/addProduct",
+//   async (productData, { rejectWithValue }) => {
+//     console.log("the product data is ", productData);
+//     try {
+//       const response = await API.post("/products", productData);
+//       return response.data;
+//     } catch (error) {
+//       const errorMessage =
+//         error.response?.data?.message ||
+//         error.message ||
+//         "Failed to add product";
+//       return rejectWithValue(errorMessage);
+//     }
+//   },
+// );
+// export const deleteProduct = createAsyncThunk(
+//   "admin/deleteProduct",
+//   async (productId, { rejectWithValue }) => {
+//     try {
+//       const response = await API.delete(`/products/${productId}`);
+//       return response.data;
+//     } catch (error) {
+//       const errorMessage =
+//         error.response?.data?.message ||
+//         error.message ||
+//         "Failed to delete product";
+//       return rejectWithValue(errorMessage);
+//     }
+//   },
+// );
+// export const editProduct = createAsyncThunk(
+//   "admin/editProduct",
+//   async ({ productId, productData }, { rejectWithValue }) => {
+//     try {
+//       const response = await API.put(`/products/${productId}`, productData);
+//       return response.data;
+//     } catch (error) {
+//       const errorMessage =
+//         error.response?.data?.message ||
+//         error.message ||
+//         "Failed to update product";
+//       return rejectWithValue(errorMessage);
+//     }
+//   },
+// );
 
 /*
  MANAGE USERS
@@ -169,7 +170,7 @@ const adminSlice = createSlice({
   initialState: {
     orders: [],
     users: [],
-    products: [],
+    // products: [],
     loading: false,
     error: null,
   },
@@ -220,62 +221,62 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.products = action.payload;
-      })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(addProduct.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addProduct.fulfilled, (state, action) => {
-        state.loading = false;
-        state.products.push(action.payload);
-      })
-      .addCase(addProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteProduct.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.loading = false;
-        state.products = state.products.filter(
-          (product) => product._id !== action.payload._id,
-        );
-      })
-      .addCase(deleteProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(editProduct.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(editProduct.fulfilled, (state, action) => {
-        state.loading = false;
-        const index = state.products.findIndex(
-          (product) => product._id === action.payload._id,
-        );
-        if (index !== -1) {
-          state.products[index] = action.payload;
-        }
-      })
-      .addCase(editProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
+      // .addCase(fetchProducts.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(fetchProducts.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.error = null;
+      //   state.products = action.payload;
+      // })
+      // .addCase(fetchProducts.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload;
+      // })
+      // .addCase(addProduct.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(addProduct.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.products.push(action.payload);
+      // })
+      // .addCase(addProduct.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload;
+      // })
+      // .addCase(deleteProduct.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(deleteProduct.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.products = state.products.filter(
+      //     (product) => product._id !== action.payload._id,
+      //   );
+      // })
+      // .addCase(deleteProduct.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload;
+      // })
+      // .addCase(editProduct.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(editProduct.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   const index = state.products.findIndex(
+      //     (product) => product._id === action.payload._id,
+      //   );
+      //   if (index !== -1) {
+      //     state.products[index] = action.payload;
+      //   }
+      // })
+      // .addCase(editProduct.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload;
+      // })
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
         state.error = null;
