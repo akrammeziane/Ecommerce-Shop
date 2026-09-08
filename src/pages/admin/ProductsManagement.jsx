@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
+  Filter,
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,6 +68,7 @@ export default function ProductsManagement() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [productForm, setProductForm] = useState(initialProductForm);
   const [formError, setFormError] = useState("");
+  const [statusFilter, setstatusFilter] = useState("ALL");
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editForm, setEditForm] = useState(initialProductForm);
@@ -77,12 +79,17 @@ export default function ProductsManagement() {
 
   const filteredProducts = useMemo(
     () =>
-      products.filter(
-        (product) =>
+      products.filter((product) => {
+        const matchesSearch =
           product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.id.toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
-    [products, searchTerm],
+          product.id.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchedStatus =
+          statusFilter === "ALL" ||
+          (statusFilter === "in stock" && product.stock > 0) ||
+          (statusFilter === "out of stock" && product.stock === 0);
+        return matchesSearch && matchedStatus;
+      }),
+    [products, searchTerm, statusFilter],
   );
 
   const getStatusColor = (status) => {
@@ -449,15 +456,30 @@ export default function ProductsManagement() {
       )}
 
       {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
-        <input
-          type="text"
-          placeholder="Search by product name or ID..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
-        />
+      <div className="flex flex-col sm:flex-row items-center gap-3">
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
+          <input
+            type="text"
+            placeholder="Search by product name or ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full h-10 pl-10 pr-4 text-sm bg-primary border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent transition-all"
+          />
+        </div>
+
+        <div className="relative w-full sm:w-48">
+          <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-footer/40 pointer-events-none" />
+          <select
+            value={statusFilter}
+            onChange={(e) => setstatusFilter(e.target.value)}
+            className="w-full h-10 pl-10 pr-8 text-sm bg-primary border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent appearance-none cursor-pointer transition-all"
+          >
+            <option value="ALL">All Products</option>
+            <option value="in stock">In Stock</option>
+            <option value="out of stock">Out Of Stock</option>
+          </select>
+        </div>
       </div>
 
       {/* Products Table */}
@@ -501,7 +523,9 @@ export default function ProductsManagement() {
               ) : filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="text-center py-12">
-                    <p className="text-footer/60 text-lg">No products found</p>
+                    <div className="text-footer/60 text-lg">
+                      No matching products found.
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -540,7 +564,7 @@ export default function ProductsManagement() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         <button
                           type="button"
                           onClick={() => openEditModal(product)}
