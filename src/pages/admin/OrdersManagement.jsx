@@ -15,6 +15,10 @@ import {
   User,
   Loader2,
   AlertCircle,
+  AlertTriangle,
+  Mail,
+  Phone,
+  MapPin,
   Image as ImageIcon,
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
@@ -30,17 +34,23 @@ export default function OrdersManagement() {
     dispatch(fetchOrders());
   }, [dispatch]);
 
-  const { orders, loading } = useSelector((state) => state.orders);
+  const { orders, loading, error } = useSelector((state) => state.orders);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
+  const [deletingOrder, setDeletingOrder] = useState(null);
   const [editStatus, setEditStatus] = useState("");
   const [actionFeedback, setActionFeedback] = useState({
     type: "",
     message: "",
   });
+  const feedbackMessage = error
+    ? `${error.message} session expired. Please login again.`
+    : actionFeedback.message;
+
+  const feedbackType = error ? "error" : actionFeedback.type;
 
   const filteredOrders = useMemo(
     () =>
@@ -75,15 +85,23 @@ export default function OrdersManagement() {
       await dispatch(deleteOrder(id)).unwrap();
       if (selectedOrder?._id === id) setSelectedOrder(null);
       if (editingOrder?._id === id) setEditingOrder(null);
+      setDeletingOrder(null);
       setActionFeedback({
         type: "success",
         message: "Order deleted successfully.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } catch (error) {
+      setDeletingOrder(null);
       setActionFeedback({
         type: "error",
         message: error.message || "Failed to delete order.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     }
   };
 
@@ -104,11 +122,18 @@ export default function OrdersManagement() {
         type: "success",
         message: "Order status updated successfully.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } catch (error) {
+      setEditingOrder(null);
       setActionFeedback({
         type: "error",
         message: error.message || "Failed to update order status.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     }
   };
 
@@ -222,22 +247,22 @@ export default function OrdersManagement() {
           </div>
         </div>
       </div>
-      {actionFeedback.message && (
+      {feedbackMessage && (
         <div
           role="alert"
           className={`flex items-start justify-between gap-4 rounded-lg border px-4 py-3 text-sm ${
-            actionFeedback.type === "error"
+            feedbackType === "error"
               ? "border-red-200 bg-red-50 text-red-700"
               : "border-green-200 bg-green-50 text-green-700"
           }`}
         >
           <div className="flex items-center gap-2">
-            {actionFeedback.type === "error" ? (
+            {feedbackType === "error" ? (
               <AlertCircle className="h-5 w-5 shrink-0" />
             ) : (
               <CheckCircle2 className="h-5 w-5 shrink-0" />
             )}
-            <span>{actionFeedback.message}</span>
+            <span>{feedbackMessage}</span>
           </div>
           <button
             type="button"
@@ -380,7 +405,7 @@ export default function OrdersManagement() {
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => handleDelete(order._id)}
+                            onClick={() => setDeletingOrder(order)}
                             className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-footer/60 hover:text-red-600"
                             title="Delete Order"
                           >
@@ -421,22 +446,53 @@ export default function OrdersManagement() {
             <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
               {/* Overview & Customer Header */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-hero/50 rounded-xl border border-footer/5">
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-footer/40 mb-1">
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-footer/40 mb-1.5">
                     Customer Details
                   </p>
-                  <p className="font-bold text-sm text-footer flex items-center gap-1.5">
-                    <User className="w-4 h-4 text-accent" />
-                    {selectedOrder.userId
-                      ? selectedOrder.userId.name
-                      : selectedOrder.guestInfo?.name || "N/A"}
+
+                  {/* Name */}
+                  <p className="font-bold text-sm text-footer flex items-center gap-2">
+                    <User className="w-4 h-4 text-accent shrink-0" />
+                    <span>
+                      {selectedOrder.userId
+                        ? selectedOrder.userId.name
+                        : selectedOrder.guestInfo?.name || "N/A"}
+                    </span>
                   </p>
-                  <p className="text-xs text-footer/60 mt-0.5">
-                    {selectedOrder.userId
-                      ? selectedOrder.userId.email
-                      : selectedOrder.guestInfo?.email || "N/A"}
+
+                  {/* Email */}
+                  <p className="text-xs text-footer/70 flex items-center gap-2">
+                    <Mail className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                    <span>
+                      {selectedOrder.userId
+                        ? selectedOrder.userId.email
+                        : selectedOrder.guestInfo?.email || "N/A"}
+                    </span>
                   </p>
-                  <p className="text-xs font-mono text-footer/40 mt-1">
+
+                  {/* Phone */}
+                  <p className="text-xs text-footer/70 flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                    <span>
+                      {selectedOrder.userId
+                        ? selectedOrder.userId.phone
+                        : selectedOrder.guestInfo?.phone || "N/A"}
+                    </span>
+                  </p>
+
+                  {/* Address */}
+                  <p className="text-xs text-footer/70 flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                    <span>
+                      {selectedOrder.userId
+                        ? selectedOrder.userId.address
+                        : selectedOrder.guestInfo?.address || "N/A"}
+                    </span>
+                  </p>
+
+                  {/* User ID */}
+                  <p className="text-[11px] font-mono text-footer/40 pt-1">
                     User ID:{" "}
                     {selectedOrder.userId
                       ? selectedOrder.userId._id
@@ -618,6 +674,81 @@ export default function OrdersManagement() {
                 className="px-4 py-2 bg-accent text-white rounded-lg text-xs font-semibold hover:bg-accent/90 transition-colors shadow-sm"
               >
                 Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deletingOrder && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-primary border border-footer/10 rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-footer/10 flex items-center justify-between bg-hero/30">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-red-500/10 text-red-600 rounded-lg">
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-footer">
+                    Confirm Deletion
+                  </h3>
+                  <p className="text-xs font-mono text-accent">
+                    Order ID: {deletingOrder._id}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setDeletingOrder(null)}
+                className="p-1.5 text-footer/60 hover:text-footer rounded-lg transition-colors hover:bg-hero"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-footer/80 leading-relaxed">
+                Are you sure you want to delete this order? This action cannot
+                be undone and will permanently remove the record from your
+                database.
+              </p>
+
+              {/* Order Details Preview */}
+              <div className="p-3.5 bg-hero/40 rounded-xl border border-footer/5 text-xs text-footer/70 space-y-1.5">
+                <p className="flex justify-between">
+                  <span className="text-footer/50">Customer:</span>
+                  <b className="text-footer">
+                    {deletingOrder.userId?.name ||
+                      deletingOrder.guestInfo?.name ||
+                      "N/A"}
+                  </b>
+                </p>
+                <p className="flex justify-between">
+                  <span className="text-footer/50">Total Amount:</span>
+                  <b className="text-footer">
+                    ${deletingOrder.totalPrice.toFixed(2)}
+                  </b>
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="px-6 py-4 border-t border-footer/10 bg-hero/30 flex justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setDeletingOrder(null)}
+                className="px-4 py-2 bg-hero text-footer rounded-lg text-xs font-semibold hover:bg-footer/10 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(deletingOrder._id)}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-colors shadow-sm flex items-center gap-1.5"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                Delete Order
               </button>
             </div>
           </div>

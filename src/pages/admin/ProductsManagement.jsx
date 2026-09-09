@@ -8,6 +8,14 @@ import {
   AlertCircle,
   Loader2,
   Filter,
+  Package,
+  XCircle,
+  Calendar,
+  Palette,
+  Ruler,
+  Tag,
+  ImageIcon,
+  Eye,
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,19 +37,42 @@ const initialProductForm = {
   availableColors: "",
   category: "",
   quantity: "0",
+  createdAt: "",
+  updatedAt: "",
 };
 
 export default function ProductsManagement() {
   const dispatch = useDispatch();
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setstatusFilter] = useState("ALL");
+  const isMongoId = (str) => /^[0-9a-fA-F]{24}$/.test(str);
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    dispatch(
+      fetchProducts({
+        page: currentPage,
+        limit: 10,
+        id: isMongoId(searchTerm) ? searchTerm : undefined,
+        name: !isMongoId(searchTerm) ? searchTerm : undefined,
+        status: statusFilter === "ALL" ? undefined : statusFilter,
+      }),
+    );
+  }, [dispatch, currentPage, searchTerm, statusFilter]);
 
   const productsFromStore = useSelector(
     (state) => state.products?.products || [],
   );
   const loading = useSelector((state) => state.products?.loading);
+  const { totalProducts, totalPages, totalInStock, totalOutOfStock } =
+    useSelector(
+      (state) =>
+        state.products || {
+          totalProducts: 0,
+          totalPages: 0,
+          totalInStock: 0,
+          totalOutOfStock: 0,
+        },
+    );
 
   const products = useMemo(
     () =>
@@ -53,10 +84,12 @@ export default function ProductsManagement() {
         availableSizes: product.availableSizes,
         availableColors: product.availableColors,
         price: `${Number(product.price).toFixed(2)} dzd`,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
         stock: product.quantity,
         status:
           product.quantity === 0
-            ? "Out of Stock"
+            ? "Out Of Stock"
             : product.quantity < 10
               ? "Low Stock"
               : "In Stock",
@@ -64,14 +97,13 @@ export default function ProductsManagement() {
       })),
     [productsFromStore],
   );
-  const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [productForm, setProductForm] = useState(initialProductForm);
   const [formError, setFormError] = useState("");
-  const [statusFilter, setstatusFilter] = useState("ALL");
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editForm, setEditForm] = useState(initialProductForm);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [actionFeedback, setActionFeedback] = useState({
     type: "",
     message: "",
@@ -80,17 +112,25 @@ export default function ProductsManagement() {
   const filteredProducts = useMemo(
     () =>
       products.filter((product) => {
-        const matchesSearch =
-          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.id.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = isMongoId(searchTerm)
+          ? product.id.toLowerCase().includes(searchTerm.toLowerCase())
+          : product.name.toLowerCase().includes(searchTerm.toLowerCase());
         const matchedStatus =
           statusFilter === "ALL" ||
-          (statusFilter === "in stock" && product.stock > 0) ||
-          (statusFilter === "out of stock" && product.stock === 0);
+          (statusFilter === "In Stock" && product.stock > 0) ||
+          (statusFilter === "Out Of Stock" && product.stock === 0);
         return matchesSearch && matchedStatus;
       }),
     [products, searchTerm, statusFilter],
   );
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -98,7 +138,7 @@ export default function ProductsManagement() {
         return "bg-green-100 text-green-700";
       case "Low Stock":
         return "bg-yellow-100 text-yellow-700";
-      case "Out of Stock":
+      case "Out Of Stock":
         return "bg-red-100 text-red-700";
       default:
         return "bg-gray-100 text-gray-700";
@@ -455,6 +495,48 @@ export default function ProductsManagement() {
         </div>
       )}
 
+      {/* Overview Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Total Products */}
+        <div className="bg-primary border border-footer/10 p-5 rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-footer/50 mb-1">
+              Total Products
+            </p>
+            <p className="text-2xl font-bold text-footer">{totalProducts}</p>
+          </div>
+          <div className="p-3 bg-accent/10 text-accent rounded-xl">
+            <Package className="w-5 h-5" />
+          </div>
+        </div>
+
+        {/* In Stock */}
+        <div className="bg-primary border border-footer/10 p-5 rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-footer/50 mb-1">
+              In Stock
+            </p>
+            <p className="text-2xl font-bold text-footer">{totalInStock}</p>
+          </div>
+          <div className="p-3 bg-emerald-500/10 text-emerald-600 rounded-xl">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+        </div>
+
+        {/* Out of Stock */}
+        <div className="bg-primary border border-footer/10 p-5 rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-footer/50 mb-1">
+              Out of Stock
+            </p>
+            <p className="text-2xl font-bold text-footer">{totalOutOfStock}</p>
+          </div>
+          <div className="p-3 bg-red-500/10 text-red-600 rounded-xl">
+            <XCircle className="w-5 h-5" />
+          </div>
+        </div>
+      </div>
+
       {/* Search */}
       <div className="flex flex-col sm:flex-row items-center gap-3">
         <div className="relative flex-1 w-full">
@@ -476,8 +558,8 @@ export default function ProductsManagement() {
             className="w-full h-10 pl-10 pr-8 text-sm bg-primary border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent appearance-none cursor-pointer transition-all"
           >
             <option value="ALL">All Products</option>
-            <option value="in stock">In Stock</option>
-            <option value="out of stock">Out Of Stock</option>
+            <option value="In Stock">In Stock</option>
+            <option value="Out Of Stock">Out Of Stock</option>
           </select>
         </div>
       </div>
@@ -566,6 +648,13 @@ export default function ProductsManagement() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-1">
                         <button
+                          onClick={() => setSelectedProduct(product)}
+                          className="p-2 hover:bg-hero rounded-lg transition-colors text-footer/60 hover:text-accent"
+                          title="View Details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
                           type="button"
                           onClick={() => openEditModal(product)}
                           aria-label={`Edit ${product.name}`}
@@ -590,6 +679,193 @@ export default function ProductsManagement() {
           </table>
         </div>
       </div>
+      {/* View Product Details Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-primary border border-footer/10 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-footer/10 flex items-center justify-between bg-hero/30">
+              <div>
+                <h3 className="text-lg font-bold text-footer">
+                  Product Details
+                </h3>
+                <p className="text-xs font-mono text-accent">
+                  Product ID: {selectedProduct._id}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="p-1.5 text-footer/60 hover:text-footer rounded-lg transition-colors hover:bg-hero"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+              {/* Top Info Card: Image, Title, Price & Stock */}
+              <div className="p-4 bg-hero/50 rounded-xl border border-footer/5 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                {/* Image */}
+                <div className="w-24 h-24 bg-hero rounded-xl border border-footer/10 overflow-hidden flex items-center justify-center shrink-0">
+                  {selectedProduct.image ? (
+                    <img
+                      src={selectedProduct.image}
+                      alt={selectedProduct.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-footer/30">
+                      <ImageIcon className="w-6 h-6" />
+                      <span className="text-[10px] mt-1">No Image</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Name & Core Details */}
+                <div className="flex-1 space-y-1.5">
+                  <h4 className="text-base font-bold text-footer">
+                    {selectedProduct.name}
+                  </h4>
+
+                  <p className="text-xs text-footer/60 flex items-center gap-1.5">
+                    <Tag className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                    Category:{" "}
+                    <b className="text-footer">
+                      {selectedProduct.category || "N/A"}
+                    </b>
+                  </p>
+
+                  <div className="flex items-center gap-3 pt-1">
+                    {/* Stock Status Badge */}
+                    {selectedProduct.stock > 0 ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                        <CheckCircle2 className="w-3 h-3" />
+                        In Stock ({selectedProduct.stock})
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-600 border border-red-500/20">
+                        <XCircle className="w-3 h-3" />
+                        Out of Stock
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="sm:text-right border-t sm:border-t-0 pt-2 sm:pt-0 w-full sm:w-auto">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-footer/40">
+                    Price
+                  </p>
+                  <p className="text-2xl font-bold text-accent">
+                    {Number(
+                      selectedProduct.price.replace("dzd", "").trim(),
+                    ).toFixed(2)}
+                    dzd
+                  </p>
+                </div>
+              </div>
+
+              {/* Variants: Available Sizes & Colors */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Available Sizes */}
+                <div className="p-4 bg-hero/30 rounded-xl border border-footer/5 space-y-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-footer/40 flex items-center gap-1.5">
+                    <Ruler className="w-3.5 h-3.5 text-accent" />
+                    Available Sizes
+                  </p>
+
+                  {selectedProduct.availableSizes &&
+                  selectedProduct.availableSizes.length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {selectedProduct.availableSizes.map((size, index) => (
+                        <span
+                          key={index}
+                          className="px-2.5 py-1 bg-primary border border-footer/10 rounded-lg text-xs font-semibold text-footer shadow-xs"
+                        >
+                          {size}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-footer/40 italic">
+                      No sizes specified
+                    </p>
+                  )}
+                </div>
+
+                {/* Available Colors */}
+                <div className="p-4 bg-hero/30 rounded-xl border border-footer/5 space-y-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-footer/40 flex items-center gap-1.5">
+                    <Palette className="w-3.5 h-3.5 text-accent" />
+                    Available Colors
+                  </p>
+
+                  {selectedProduct.availableColors &&
+                  selectedProduct.availableColors.length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {selectedProduct.availableColors.map((color, index) => (
+                        <span
+                          key={index}
+                          className="px-2.5 py-1 bg-primary border border-footer/10 rounded-lg text-xs font-semibold text-footer shadow-xs flex items-center gap-1.5"
+                        >
+                          <span
+                            className="w-2.5 h-2.5 rounded-full border border-footer/20"
+                            style={{ backgroundColor: color.toLowerCase() }}
+                          />
+                          {color}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-footer/40 italic">
+                      No colors specified
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Description Section (Optional if present in model) */}
+              {selectedProduct.description && (
+                <div className="p-4 bg-hero/30 rounded-xl border border-footer/5 space-y-1.5">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-footer/40">
+                    Description
+                  </p>
+                  <p className="text-xs text-footer/80 leading-relaxed">
+                    {selectedProduct.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Timestamps Footer */}
+              <div className="pt-2 border-t border-footer/10 flex items-center justify-between text-xs text-footer/50">
+                <p className="flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5" /> Created:{" "}
+                  {selectedProduct.createdAt
+                    ? formatDate(selectedProduct.createdAt)
+                    : "N/A"}
+                </p>
+                <p>
+                  Updated:{" "}
+                  {selectedProduct.updatedAt
+                    ? formatDate(selectedProduct.updatedAt)
+                    : "N/A"}
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="px-6 py-4 border-t border-footer/10 bg-hero/30 flex justify-end gap-2.5">
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="px-4 py-2 bg-hero text-footer rounded-lg text-xs font-semibold hover:bg-footer/10 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Edit form */}
       {editingProduct && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-footer/50 p-4"
@@ -747,6 +1023,21 @@ export default function ProductsManagement() {
           </div>
         </div>
       )}
+      <div className="flex items-center justify-center gap-2 mt-6">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`px-3 py-1 rounded-lg text-xs font-bold ${
+              currentPage === page
+                ? "bg-accent text-primary"
+                : "bg-hero text-footer"
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

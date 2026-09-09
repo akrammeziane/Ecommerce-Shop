@@ -3,9 +3,11 @@ import API from "@/api/axiosInstance";
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1, limit = 10, name, id, status }, { rejectWithValue }) => {
     try {
-      const response = await API.get("/products");
+      const response = await API.get("/products", {
+        params: { page, limit, name, id, status },
+      });
       return response.data;
     } catch (error) {
       const errorMessage =
@@ -68,6 +70,10 @@ const productsSlice = createSlice({
   initialState: {
     products: [],
     loading: false,
+    totalProducts: 0,
+    totalInStock: 0,
+    totalOutOfStock: 0,
+    totalPages: 0,
     error: null,
   },
   reducers: {},
@@ -80,7 +86,11 @@ const productsSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.products = action.payload;
+        state.products = action.payload.products;
+        state.totalProducts = action.payload.totalProducts;
+        state.totalInStock = action.payload.totalInStock;
+        state.totalOutOfStock = action.payload.totalOutOfStock;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
