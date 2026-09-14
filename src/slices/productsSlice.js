@@ -3,10 +3,13 @@ import API from "@/api/axiosInstance";
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async ({ page = 1, limit = 10, name, id, status }, { rejectWithValue }) => {
+  async (
+    { page = 1, limit = 10, name, id, status, category },
+    { rejectWithValue },
+  ) => {
     try {
       const response = await API.get("/products", {
-        params: { page, limit, name, id, status },
+        params: { page, limit, name, id, status, category },
       });
       return response.data;
     } catch (error) {
@@ -21,7 +24,6 @@ export const fetchProducts = createAsyncThunk(
 export const addProduct = createAsyncThunk(
   "products/addProduct",
   async (productData, { rejectWithValue }) => {
-    console.log("the product data is ", productData);
     try {
       const response = await API.post("/products", productData);
       return response.data;
@@ -74,9 +76,14 @@ const productsSlice = createSlice({
     totalInStock: 0,
     totalOutOfStock: 0,
     totalPages: 0,
+    currentPage: 1,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -91,6 +98,7 @@ const productsSlice = createSlice({
         state.totalInStock = action.payload.totalInStock;
         state.totalOutOfStock = action.payload.totalOutOfStock;
         state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
@@ -102,6 +110,17 @@ const productsSlice = createSlice({
       })
       .addCase(addProduct.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
+        state.totalProducts += 1;
+        if (action.payload.status === "In Stock") {
+          state.totalInStock += 1;
+        } else if (action.payload.status === "Out Of Stock") {
+          state.totalOutOfStock += 1;
+        }
+        if (state.totalProducts > state.totalPages * 10) {
+          state.totalPages += 1;
+          state.currentPage = state.totalPages;
+        }
         state.products.push(action.payload);
       })
       .addCase(addProduct.rejected, (state, action) => {
@@ -114,6 +133,17 @@ const productsSlice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
+        state.totalProducts -= 1;
+        if (action.payload.status === "In Stock") {
+          state.totalInStock -= 1;
+        } else if (action.payload.status === "Out Of Stock") {
+          state.totalOutOfStock -= 1;
+        }
+        if (state.totalProducts <= state.totalPages * 10) {
+          state.totalPages -= 1;
+          state.currentPage = state.totalPages;
+        }
         state.products = state.products.filter(
           (product) => product._id !== action.payload._id,
         );
@@ -129,10 +159,12 @@ const productsSlice = createSlice({
       .addCase(editProduct.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.products.findIndex(
-          (product) => product._id === action.payload._id,
+          (product) => product._id === action.payload.product._id,
         );
         if (index !== -1) {
-          state.products[index] = action.payload;
+          state.products[index] = action.payload.product;
+          state.totalInStock = action.payload.totalInStock;
+          state.totalOutOfStock = action.payload.totalOutOfStock;
         }
       })
       .addCase(editProduct.rejected, (state, action) => {
@@ -141,5 +173,5 @@ const productsSlice = createSlice({
       });
   },
 });
-
+export const { setCurrentPage } = productsSlice.actions;
 export default productsSlice.reducer;

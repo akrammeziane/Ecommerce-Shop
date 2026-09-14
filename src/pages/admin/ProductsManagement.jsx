@@ -24,6 +24,7 @@ import {
   deleteProduct,
   editProduct,
   fetchProducts,
+  setCurrentPage,
 } from "@/slices/productsSlice";
 
 const availableSizeOptions = ["S", "M", "L", "XL", "XXL", "XXXL"];
@@ -43,27 +44,46 @@ const initialProductForm = {
 
 export default function ProductsManagement() {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
+  const { currentPage } = useSelector(
+    (state) => state.products || { currentPage: 1 },
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setstatusFilter] = useState("ALL");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [Debounced, setDebounced] = useState("");
   const isMongoId = (str) => /^[0-9a-fA-F]{24}$/.test(str);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebounced(searchTerm);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
   useEffect(() => {
     dispatch(
       fetchProducts({
         page: currentPage,
         limit: 10,
-        id: isMongoId(searchTerm) ? searchTerm : undefined,
-        name: !isMongoId(searchTerm) ? searchTerm : undefined,
+        id: isMongoId(Debounced) ? Debounced : undefined,
+        name: !isMongoId(Debounced) ? Debounced : undefined,
         status: statusFilter === "ALL" ? undefined : statusFilter,
+        category: categoryFilter === "All" ? undefined : categoryFilter,
       }),
     );
-  }, [dispatch, currentPage, searchTerm, statusFilter]);
+    // return () => {
+    //   (setDebounced(""),
+    //     setSearchTerm(""),
+    //     setstatusFilter("ALL"),
+    //     setCategoryFilter("All"));
+    // };
+  }, [dispatch, currentPage, statusFilter, Debounced, categoryFilter]);
 
   const productsFromStore = useSelector(
     (state) => state.products?.products || [],
   );
   const loading = useSelector((state) => state.products?.loading);
-  const { totalProducts, totalPages, totalInStock, totalOutOfStock } =
+  const { totalProducts, totalPages, totalInStock, totalOutOfStock, error } =
     useSelector(
       (state) =>
         state.products || {
@@ -83,7 +103,7 @@ export default function ProductsManagement() {
         description: product.description,
         availableSizes: product.availableSizes,
         availableColors: product.availableColors,
-        price: `${Number(product.price).toFixed(2)} dzd`,
+        price: `${Number(product.price).toFixed(2)} DZD`,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         stock: product.quantity,
@@ -108,20 +128,27 @@ export default function ProductsManagement() {
     type: "",
     message: "",
   });
+  const feedbackMessage = error
+    ? `${error.message} session expired. Please login again.`
+    : actionFeedback.message;
+
+  const feedbackType = error ? "error" : actionFeedback.type;
 
   const filteredProducts = useMemo(
     () =>
       products.filter((product) => {
-        const matchesSearch = isMongoId(searchTerm)
-          ? product.id.toLowerCase().includes(searchTerm.toLowerCase())
-          : product.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = isMongoId(Debounced)
+          ? product.id.toLowerCase().includes(Debounced.toLowerCase())
+          : product.name.toLowerCase().includes(Debounced.toLowerCase());
         const matchedStatus =
           statusFilter === "ALL" ||
           (statusFilter === "In Stock" && product.stock > 0) ||
           (statusFilter === "Out Of Stock" && product.stock === 0);
-        return matchesSearch && matchedStatus;
+        const matchedCategory =
+          categoryFilter === "All" || product.category === categoryFilter;
+        return matchesSearch && matchedStatus && matchedCategory;
       }),
-    [products, searchTerm, statusFilter],
+    [products, statusFilter, categoryFilter, Debounced],
   );
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -161,6 +188,9 @@ export default function ProductsManagement() {
         type: "success",
         message: "Product deleted successfully.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } catch (error) {
       setActionFeedback({
         type: "error",
@@ -178,7 +208,7 @@ export default function ProductsManagement() {
       name: product.name || "",
       description: product.description || "",
       price: String(product.price || "")
-        .replace("dzd", "")
+        .replace("DZD", "")
         .trim(),
       image: product.image?.startsWith("http") ? product.image : "",
       availableSizes: product.availableSizes || [],
@@ -250,12 +280,18 @@ export default function ProductsManagement() {
         type: "success",
         message: "Product updated successfully.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } catch (error) {
       setActionFeedback({
         type: "error",
         message:
           typeof error === "string" ? error : "Failed to update product.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
       return;
     }
   };
@@ -312,11 +348,17 @@ export default function ProductsManagement() {
         type: "success",
         message: "Product added successfully.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } catch (error) {
       console.log("the errors is ", error);
       setFormError(
         typeof error === "string" ? error : "Failed to add product.",
       );
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } finally {
       setIsAddingProduct(false);
     }
@@ -343,22 +385,22 @@ export default function ProductsManagement() {
         </button>
       </div>
 
-      {actionFeedback.message && (
+      {feedbackMessage && (
         <div
           role="alert"
           className={`flex items-start justify-between gap-4 rounded-lg border px-4 py-3 text-sm ${
-            actionFeedback.type === "error"
+            feedbackType === "error"
               ? "border-red-200 bg-red-50 text-red-700"
               : "border-green-200 bg-green-50 text-green-700"
           }`}
         >
           <div className="flex items-center gap-2">
-            {actionFeedback.type === "error" ? (
+            {feedbackType === "error" ? (
               <AlertCircle className="h-5 w-5 shrink-0" />
             ) : (
               <CheckCircle2 className="h-5 w-5 shrink-0" />
             )}
-            <span>{actionFeedback.message}</span>
+            <span>{feedbackMessage}</span>
           </div>
           <button
             type="button"
@@ -409,7 +451,7 @@ export default function ProductsManagement() {
               <input
                 name="price"
                 type="number"
-                placeholder="Price"
+                placeholder="Price (DZD)"
                 value={productForm.price}
                 onChange={handleFormChange}
                 min="0"
@@ -539,6 +581,7 @@ export default function ProductsManagement() {
 
       {/* Search */}
       <div className="flex flex-col sm:flex-row items-center gap-3">
+        {/* Search Input */}
         <div className="relative flex-1 w-full">
           <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
           <input
@@ -550,6 +593,25 @@ export default function ProductsManagement() {
           />
         </div>
 
+        {/* Category Filter */}
+        <div className="relative w-full sm:w-48">
+          <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-footer/40 pointer-events-none" />
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="w-full h-10 pl-10 pr-8 text-sm bg-primary border border-footer/10 rounded-lg text-footer focus:outline-none focus:ring-2 focus:ring-accent appearance-none cursor-pointer transition-all"
+          >
+            <option value="All">All Categories</option>
+            <option value="T-Shirts">T-Shirts</option>
+            <option value="Jackets">Jackets</option>
+            <option value="Pants">Pants</option>
+            <option value="Hoodies">Hoodies</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Shoes">Shoes</option>
+          </select>
+        </div>
+
+        {/* Status / Stock Filter */}
         <div className="relative w-full sm:w-48">
           <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-footer/40 pointer-events-none" />
           <select
@@ -690,7 +752,7 @@ export default function ProductsManagement() {
                   Product Details
                 </h3>
                 <p className="text-xs font-mono text-accent">
-                  Product ID: {selectedProduct._id}
+                  Product ID: {selectedProduct.id}
                 </p>
               </div>
               <button
@@ -758,9 +820,11 @@ export default function ProductsManagement() {
                   </p>
                   <p className="text-2xl font-bold text-accent">
                     {Number(
-                      selectedProduct.price.replace("dzd", "").trim(),
+                      selectedProduct.price.replace("DZD", "").trim(),
                     ).toFixed(2)}
-                    dzd
+                    <span className="text-xs font-normal text-footer/60 ml-1">
+                      DZD
+                    </span>
                   </p>
                 </div>
               </div>
@@ -1023,11 +1087,12 @@ export default function ProductsManagement() {
           </div>
         </div>
       )}
+      {/* Pagination Controls */}
       <div className="flex items-center justify-center gap-2 mt-6">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            onClick={() => setCurrentPage(page)}
+            onClick={() => dispatch(setCurrentPage(page))}
             className={`px-3 py-1 rounded-lg text-xs font-bold ${
               currentPage === page
                 ? "bg-accent text-primary"

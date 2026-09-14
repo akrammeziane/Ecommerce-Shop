@@ -20,29 +20,66 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, deleteUser } from "@/slices/usersSlice";
+import { fetchUsers, deleteUser, setCurrentPage } from "@/slices/usersSlice";
 
 export default function UsersManagement() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
-
-  const { users, loading } = useSelector((state) => state.users);
+  const [Debounced, setDebounced] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
+  const { currentPage } = useSelector((state) => state.users);
+  const isMongoId = (str) => /^[0-9a-fA-F]{24}$/.test(str);
+  const isValidEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebounced(searchTerm);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    dispatch(
+      fetchUsers({
+        page: currentPage,
+        limit: 10,
+        id: isMongoId(Debounced) ? Debounced : undefined,
+        name:
+          !isMongoId(Debounced) && !isValidEmail(Debounced)
+            ? Debounced
+            : undefined,
+        email: isValidEmail(Debounced) ? Debounced : undefined,
+        isAdmin:
+          roleFilter === "Admin"
+            ? true
+            : roleFilter === "Customer"
+              ? false
+              : undefined,
+      }),
+    );
+  }, [dispatch, currentPage, Debounced, roleFilter]);
+  const { totalUsers, totalAdmins, totalRegularUsers, totalPages, error } =
+    useSelector((state) => state.users);
+
+  const { users, loading } = useSelector((state) => state.users);
   const [selectedUser, setSelectedUser] = useState(null);
   const [actionFeedback, setActionFeedback] = useState({
     type: "",
     message: "",
   });
+  const feedbackMessage = error
+    ? `${error.message} session expired. Please login again.`
+    : actionFeedback.message;
+
+  const feedbackType = error ? "error" : actionFeedback.type;
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
-      const matchesSearch =
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user._id.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = isMongoId(Debounced)
+        ? user._id.toLowerCase().includes(Debounced.toLowerCase())
+        : isValidEmail(Debounced)
+          ? user.email.toLowerCase().includes(Debounced.toLowerCase())
+          : user.name.toLowerCase().includes(Debounced.toLowerCase());
 
       const matchesRole =
         roleFilter === "All" ||
@@ -51,7 +88,7 @@ export default function UsersManagement() {
 
       return matchesSearch && matchesRole;
     });
-  }, [users, searchTerm, roleFilter]);
+  }, [users, Debounced, roleFilter]);
 
   const handleDelete = async (id) => {
     setActionFeedback({ type: "", message: "" });
@@ -62,11 +99,17 @@ export default function UsersManagement() {
         message: "User deleted successfully.",
       });
       if (selectedUser?._id === id) setSelectedUser(null);
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     } catch (error) {
       setActionFeedback({
         type: "error",
         message: error.message || "Failed to delete user.",
       });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
     }
   };
 
@@ -100,7 +143,7 @@ export default function UsersManagement() {
             <p className="text-xs font-semibold uppercase tracking-wider text-footer/50 mb-1">
               Total Users
             </p>
-            <p className="text-2xl font-bold text-footer">{users.length}</p>
+            <p className="text-2xl font-bold text-footer">{totalUsers}</p>
           </div>
           <div className="p-3 bg-accent/10 text-accent rounded-xl">
             <Users className="w-5 h-5" />
@@ -113,7 +156,7 @@ export default function UsersManagement() {
               Customers
             </p>
             <p className="text-2xl font-bold text-footer">
-              {users.filter((u) => !u.isAdmin).length}
+              {totalRegularUsers}
             </p>
           </div>
           <div className="p-3 bg-blue-500/10 text-blue-600 rounded-xl">
@@ -126,31 +169,29 @@ export default function UsersManagement() {
             <p className="text-xs font-semibold uppercase tracking-wider text-footer/50 mb-1">
               Admins
             </p>
-            <p className="text-2xl font-bold text-footer">
-              {users.filter((u) => u.isAdmin).length}
-            </p>
+            <p className="text-2xl font-bold text-footer">{totalAdmins}</p>
           </div>
           <div className="p-3 bg-purple-500/10 text-purple-600 rounded-xl">
             <ShieldCheck className="w-5 h-5" />
           </div>
         </div>
       </div>
-      {actionFeedback.message && (
+      {feedbackMessage && (
         <div
           role="alert"
           className={`flex items-start justify-between gap-4 rounded-lg border px-4 py-3 text-sm ${
-            actionFeedback.type === "error"
+            feedbackType === "error"
               ? "border-red-200 bg-red-50 text-red-700"
               : "border-green-200 bg-green-50 text-green-700"
           }`}
         >
           <div className="flex items-center gap-2">
-            {actionFeedback.type === "error" ? (
+            {feedbackType === "error" ? (
               <AlertCircle className="h-5 w-5 shrink-0" />
             ) : (
               <CheckCircle2 className="h-5 w-5 shrink-0" />
             )}
-            <span>{actionFeedback.message}</span>
+            <span>{feedbackMessage}</span>
           </div>
           <button
             type="button"
@@ -436,6 +477,22 @@ export default function UsersManagement() {
           </div>
         </div>
       )}
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-center gap-2 mt-6">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => dispatch(setCurrentPage(page))}
+            className={`px-3 py-1 rounded-lg text-xs font-bold ${
+              currentPage === page
+                ? "bg-accent text-primary"
+                : "bg-hero text-footer"
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

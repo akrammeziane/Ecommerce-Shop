@@ -27,21 +27,42 @@ import {
   fetchOrders,
   editOrderStatus,
   deleteOrder,
+  setCurrentPage,
 } from "@/slices/ordersSlice";
 export default function OrdersManagement() {
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [Debounced, setDebounced] = useState("");
+  const currentPage = useSelector((state) => state.orders.currentPage);
+  const isMongoId = (str) => /^[0-9a-fA-F]{24}$/.test(str);
   useEffect(() => {
-    dispatch(fetchOrders());
-  }, [dispatch]);
+    const timer = setTimeout(() => {
+      setDebounced(searchTerm);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    dispatch(
+      fetchOrders({
+        page: currentPage,
+        limit: 10,
+        productId: isMongoId(Debounced) ? Debounced : undefined,
+        phone: !isMongoId(Debounced) ? Debounced : undefined,
+        status: statusFilter !== "All" ? statusFilter : undefined,
+      }),
+    );
+  }, [dispatch, currentPage, Debounced, statusFilter]);
+  const { totalPages, totalOrders, totalRevenue, totalPendingOrders } =
+    useSelector((state) => state.orders);
 
   const { orders, loading, error } = useSelector((state) => state.orders);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
-  const [deletingOrder, setDeletingOrder] = useState(null);
   const [editStatus, setEditStatus] = useState("");
+  const [deletingOrder, setDeletingOrder] = useState(null);
   const [actionFeedback, setActionFeedback] = useState({
     type: "",
     message: "",
@@ -55,20 +76,24 @@ export default function OrdersManagement() {
   const filteredOrders = useMemo(
     () =>
       orders.filter((order) => {
-        const { userId, guestInfo } = order;
-        const matchesSearch =
-          order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          userId._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          userId.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          userId.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (guestInfo &&
-            guestInfo.phone.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (guestInfo &&
-            guestInfo.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (guestInfo &&
-            guestInfo._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (guestInfo &&
-            guestInfo.email.toLowerCase().includes(searchTerm.toLowerCase()));
+        const productMatches = order.products.some((product) => {
+          if (isMongoId(Debounced)) {
+            return product.productId?._id
+              ?.toLowerCase()
+              .includes(Debounced.toLowerCase());
+          }
+          return false;
+        });
+        const matchesSearch = !Debounced
+          ? true
+          : isMongoId(Debounced)
+            ? productMatches
+            : order.userId?.phone
+                ?.toLowerCase()
+                .includes(Debounced.toLowerCase()) ||
+              order.guestInfo?.phone
+                ?.toLowerCase()
+                .includes(Debounced.toLowerCase());
 
         const matchesStatus =
           statusFilter === "All" ||
@@ -76,8 +101,9 @@ export default function OrdersManagement() {
 
         return matchesSearch && matchesStatus;
       }),
-    [orders, searchTerm, statusFilter],
+    [orders, Debounced, statusFilter],
   );
+  console.log("Filtered orders:", filteredOrders);
 
   const handleDelete = async (id) => {
     setActionFeedback({ type: "", message: "" });
@@ -115,7 +141,10 @@ export default function OrdersManagement() {
     setActionFeedback({ type: "", message: "" });
     try {
       await dispatch(
-        editOrderStatus({ orderId: editingOrder._id, status: editStatus }),
+        editOrderStatus({
+          orderId: editingOrder._id,
+          status: editStatus,
+        }),
       ).unwrap();
       setEditingOrder(null);
       setActionFeedback({
@@ -187,12 +216,6 @@ export default function OrdersManagement() {
     }
   };
 
-  const totalRevenue = orders.reduce(
-    (acc, order) =>
-      order.status !== "cancelled" ? acc + order.totalPrice : acc,
-    0,
-  );
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -212,7 +235,7 @@ export default function OrdersManagement() {
             <p className="text-xs font-semibold uppercase tracking-wider text-footer/50 mb-1">
               Total Orders
             </p>
-            <p className="text-2xl font-bold text-footer">{orders.length}</p>
+            <p className="text-2xl font-bold text-footer">{totalOrders}</p>
           </div>
           <div className="p-3 bg-accent/10 text-accent rounded-xl">
             <ShoppingBag className="w-5 h-5" />
@@ -225,7 +248,9 @@ export default function OrdersManagement() {
               Total Revenue
             </p>
             <p className="text-2xl font-bold text-footer">
-              ${totalRevenue.toFixed(2)}
+              {totalRevenue.toFixed(2) === "0.00"
+                ? "0.00 DZD"
+                : `${totalRevenue.toFixed(2)} DZD`}
             </p>
           </div>
           <div className="p-3 bg-emerald-500/10 text-emerald-600 rounded-xl">
@@ -239,7 +264,7 @@ export default function OrdersManagement() {
               Pending Orders
             </p>
             <p className="text-2xl font-bold text-footer">
-              {orders.filter((o) => o.status === "pending").length}
+              {totalPendingOrders}
             </p>
           </div>
           <div className="p-3 bg-amber-500/10 text-amber-600 rounded-xl">
@@ -247,6 +272,7 @@ export default function OrdersManagement() {
           </div>
         </div>
       </div>
+      {/* Feedback Message */}
       {feedbackMessage && (
         <div
           role="alert"
@@ -281,7 +307,7 @@ export default function OrdersManagement() {
           <Search className="absolute left-4 top-3 w-5 h-5 text-footer/40" />
           <input
             type="text"
-            placeholder="Search by order ID, user ID, or customer name..."
+            placeholder="Search by phone number or product Id..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full h-10 pl-10 pr-4 text-sm bg-primary border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent transition-all"
@@ -380,7 +406,7 @@ export default function OrdersManagement() {
                         {totalItems} {totalItems === 1 ? "item" : "items"}
                       </td>
                       <td className="px-6 py-4 text-sm font-bold text-footer whitespace-nowrap">
-                        ${order.totalPrice.toFixed(2)}
+                        {order.totalPrice.toFixed(2)} DZD
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {getStatusBadge(order.status)}
@@ -522,6 +548,18 @@ export default function OrdersManagement() {
                 <div className="space-y-3">
                   {selectedOrder.products.map((item) => {
                     const { productId } = item;
+                    if (!productId) {
+                      return (
+                        <div
+                          key={item._id}
+                          className="p-3.5 bg-hero/30 rounded-xl border border-footer/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                        >
+                          <p className="text-sm text-footer">
+                            Product not found
+                          </p>
+                        </div>
+                      );
+                    }
                     return (
                       <div
                         key={productId._id}
@@ -571,7 +609,7 @@ export default function OrdersManagement() {
                             Qty: <b className="text-footer">{item.quantity}</b>
                           </p>
                           <p className="text-sm font-bold text-footer">
-                            ${(productId.price * item.quantity).toFixed(2)}
+                            {(productId.price * item.quantity).toFixed(2)} DZD
                           </p>
                         </div>
                       </div>
@@ -592,7 +630,7 @@ export default function OrdersManagement() {
                 <div className="text-right">
                   <p className="text-xs text-footer/60">Total Amount</p>
                   <p className="text-2xl font-bold text-accent">
-                    ${selectedOrder.totalPrice.toFixed(2)}
+                    {selectedOrder.totalPrice.toFixed(2)} DZD
                   </p>
                 </div>
               </div>
@@ -754,6 +792,22 @@ export default function OrdersManagement() {
           </div>
         </div>
       )}
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-center gap-2 mt-6">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => dispatch(setCurrentPage(page))}
+            className={`px-3 py-1 rounded-lg text-xs font-bold ${
+              currentPage === page
+                ? "bg-accent text-primary"
+                : "bg-hero text-footer"
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

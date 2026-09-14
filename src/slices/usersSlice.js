@@ -3,9 +3,14 @@ import API from "@/api/axiosInstance";
 
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
-  async (_, { rejectWithValue }) => {
+  async (
+    { page = 1, limit = 10, id, name, email, isAdmin },
+    { rejectWithValue },
+  ) => {
     try {
-      const response = await API.get("/users");
+      const response = await API.get("/users", {
+        params: { page, limit, id, name, email, isAdmin },
+      });
       return response.data;
     } catch (error) {
       const errorMessage =
@@ -51,10 +56,19 @@ const usersSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
+    totalUsers: 0,
+    totalAdmins: 0,
+    totalRegularUsers: 0,
+    totalPages: 0,
+    currentPage: 1,
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -65,6 +79,11 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.users = action.payload.users;
+        state.totalUsers = action.payload.totalUsers;
+        state.totalAdmins = action.payload.totalAdmins;
+        state.totalRegularUsers = action.payload.totalRegularUsers;
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
@@ -76,6 +95,16 @@ const usersSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.totalUsers -= 1;
+        if (action.payload.isAdmin === "true") {
+          state.totalAdmins -= 1;
+        } else {
+          state.totalRegularUsers -= 1;
+        }
+        if (state.totalUsers <= state.totalPages * 10) {
+          state.totalPages -= 1;
+          state.currentPage = state.totalPages;
+        }
         state.users = state.users.filter(
           (user) => user._id !== action.payload._id,
         );
@@ -103,5 +132,5 @@ const usersSlice = createSlice({
       });
   },
 });
-
+export const { setCurrentPage } = usersSlice.actions;
 export default usersSlice.reducer;
