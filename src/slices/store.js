@@ -4,6 +4,7 @@ import productsReducer from "./productsSlice";
 import usersReducer from "./usersSlice";
 import ordersReducer from "./ordersSlice";
 import dashboardReducer from "./dashboardSlice";
+import forgetPasswordReducer from "./forgetPasswordSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     users: usersReducer,
     orders: ordersReducer,
     dashboard: dashboardReducer,
+    forgetPassword: forgetPasswordReducer,
   },
 });
 export default store;

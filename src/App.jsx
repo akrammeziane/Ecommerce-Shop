@@ -16,6 +16,9 @@ import Checkout from "./pages/shop/Checkout";
 import Cart from "./pages/shop/Cart";
 import MainLayout from "./pages/main-layout/MainLayout";
 import ProtectedPages from "./pages/protected-pages/ProtectedPages";
+import ForgotPassword from "./pages/reset-password/ForgotPassword";
+import ResetPassword from "./pages/reset-password/ResetPassword";
+import ResetPasswordSuccess from "./pages/reset-password/Resetpasswordsuccess ";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,6 +39,10 @@ function App() {
     },
     { path: "login", element: <Login /> },
     { path: "register", element: <Register /> },
+    { path: "forgot-password", element: <ForgotPassword /> },
+    { path: "reset-password/:userId/:token", element: <ResetPassword /> },
+    { path: "reset-password-success", element: <ResetPasswordSuccess /> },
+
     {
       element: <ProtectedPages adminCheck={false} />,
       children: [{ path: "account", element: <ClientDashboard /> }],
