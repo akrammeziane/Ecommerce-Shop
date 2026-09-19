@@ -1,15 +1,10 @@
 import { useState } from "react";
-import {
-  ChevronDown,
-  Menu,
-  Search,
-  ShoppingCart,
-  UserRound,
-  X,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ChevronDown, Menu, ShoppingCart, UserRound, X } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
+  const { productsOrderedNumber } = useSelector((state) => state.products);
   const items = [
     "T-Shirts",
     "Jackets",
@@ -21,14 +16,16 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
   return (
     <header className="border-b border-black/10 bg-primary">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <h1 className="font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
-            Talqin
-          </h1>
+          <Link to="/">
+            <h1 className="font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
+              Talqin
+            </h1>
+          </Link>
         </div>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -38,31 +35,49 @@ export default function NavBar() {
           >
             Home
           </button>
+          {location.pathname === "/shop" ? (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => navigate("/shop")}
+                className="flex items-center gap-1 text-sm font-medium uppercase tracking-[0.12em] text-footer"
+              >
+                Shop
+                <ChevronDown size={15} />
+              </button>
+            </div>
+          ) : (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShopOpen((prev) => !prev)}
+                className="flex items-center gap-1 text-sm font-medium uppercase tracking-[0.12em] text-footer"
+              >
+                Shop
+                <ChevronDown size={15} />
+              </button>
 
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShopOpen((prev) => !prev)}
-              className="flex items-center gap-1 text-sm font-medium uppercase tracking-[0.12em] text-footer"
-            >
-              Shop
-              <ChevronDown size={15} />
-            </button>
-
-            {shopOpen && (
-              <div className="absolute left-0 top-full z-50 mt-3 min-w-[200px] border border-black/10 bg-primary shadow-lg">
-                {items.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className="block w-full border-b border-black/5 px-4 py-3 text-left text-sm uppercase tracking-[0.14em] text-footer transition hover:bg-black/5 last:border-b-0"
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+              {shopOpen && (
+                <div className="absolute left-0 top-full z-50 mt-3 min-w-[200px] border border-black/10 bg-primary shadow-lg">
+                  {items.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => {
+                        setShopOpen(false);
+                        navigate("/shop", {
+                          state: { category: item, redirect: true },
+                        });
+                      }}
+                      className="block w-full border-b border-black/5 px-4 py-3 text-left text-sm uppercase tracking-[0.14em] text-footer transition hover:bg-black/5 last:border-b-0"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <button
             className="text-sm font-medium uppercase tracking-[0.12em] text-footer"
@@ -86,12 +101,12 @@ export default function NavBar() {
         </nav>
 
         <div className="flex items-center gap-3 text-footer">
-          <button
+          {/* <button
             aria-label="Search"
             className="rounded-full p-2 transition hover:bg-black/5"
           >
             <Search size={18} />
-          </button>
+          </button> */}
           <button
             aria-label="Profile"
             className="rounded-full p-2 transition hover:bg-black/5"
@@ -106,7 +121,7 @@ export default function NavBar() {
           >
             <ShoppingCart size={18} />
             <span className="absolute -right-1.5 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-primary">
-              0
+              {productsOrderedNumber}
             </span>
           </button>
 
@@ -150,6 +165,12 @@ export default function NavBar() {
                     <button
                       key={item}
                       type="button"
+                      onClick={() => {
+                        setShopOpen(false);
+                        navigate("/shop", {
+                          state: { category: item, redirect: true },
+                        });
+                      }}
                       className="text-left text-sm uppercase tracking-[0.12em] text-footer/80"
                     >
                       {item}

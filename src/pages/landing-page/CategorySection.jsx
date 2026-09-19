@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const categories = [
   {
     title: "Hoodies",
@@ -27,6 +29,7 @@ const categories = [
 ];
 
 export default function CategorySection() {
+  const navigate = useNavigate();
   return (
     <section className="mx-auto mt-10 max-w-[1400px] px-4 sm:px-6 lg:px-8">
       <h2 className="text-center font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
@@ -52,7 +55,15 @@ export default function CategorySection() {
               <p className="text-xl font-bold uppercase tracking-wide text-primary">
                 {title}
               </p>
-              <button className="mt-3 inline-flex items-center border border-primary/60 px-3 py-2 text-[10px] font-medium uppercase tracking-[0.2em] text-primary transition hover:bg-primary hover:text-footer">
+              <button
+                className="mt-3 inline-flex items-center border border-primary/60 px-3 py-2 text-[10px] font-medium uppercase tracking-[0.2em] text-primary transition hover:bg-primary hover:text-footer"
+                onClick={() =>
+                  navigate(`/shop`, {
+                    state: { category: title },
+                    replace: true,
+                  })
+                }
+              >
                 Shop now
               </button>
             </div>

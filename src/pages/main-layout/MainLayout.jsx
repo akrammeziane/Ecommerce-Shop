@@ -2,6 +2,7 @@ import Footer from "../landing-page/Footer";
 import NavBar from "../landing-page/NavBar";
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import ScrollToTop from "../scrollToTop/ScrollToTop";
 
 export default function MainLayout() {
   const { hash } = useLocation();
@@ -20,6 +21,7 @@ export default function MainLayout() {
     <div className="min-h-screen bg-primary text-footer overflow-x-clip">
       <NavBar />
       <main>
+        <ScrollToTop />
         <Outlet />
       </main>
       <Footer />

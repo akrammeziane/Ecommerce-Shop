@@ -10,7 +10,7 @@ import UsersManagement from "./pages/admin/UsersManagement";
 import ShoppingProducts from "./pages/shop/ShoppingProducts";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import ClientDashboard from "./pages/client/ClientDashboard";
+// import ClientDashboard from "./pages/client/ClientDashboard";
 import ProductDetail from "./pages/shop/ProductDetail";
 import Checkout from "./pages/shop/Checkout";
 import Cart from "./pages/shop/Cart";
@@ -19,6 +19,10 @@ import ProtectedPages from "./pages/protected-pages/ProtectedPages";
 import ForgotPassword from "./pages/reset-password/ForgotPassword";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 import ResetPasswordSuccess from "./pages/reset-password/Resetpasswordsuccess ";
+import AccountLayout from "./pages/client/AccountLayout";
+import MyOrders from "./pages/client/MyOrders";
+import Profile from "./pages/client/Profile";
+import Settings from "./pages/client/Settings";
 
 function App() {
   const router = createBrowserRouter([
@@ -45,7 +49,17 @@ function App() {
 
     {
       element: <ProtectedPages adminCheck={false} />,
-      children: [{ path: "account", element: <ClientDashboard /> }],
+      children: [
+        {
+          path: "account",
+          element: <AccountLayout />,
+          children: [
+            { index: true, element: <MyOrders /> },
+            { path: "profile", element: <Profile /> },
+            { path: "settings", element: <Settings /> },
+          ],
+        },
+      ],
     },
     {
       element: <ProtectedPages adminCheck={true} />,
