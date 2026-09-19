@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Trash2,
   Plus,
@@ -5,31 +6,74 @@ import {
   ArrowRight,
   ShoppingBag,
   ShieldCheck,
+  Truck,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { decrementProductsOrderedNumber } from "../../slices/productsSlice";
 
-export default function Cart({ cartItems = defaultMockCart }) {
-  // Subtotal Calculation
+const currency = (value) => `${Number(value || 0).toLocaleString()} DZD`;
+
+const FREE_SHIPPING_THRESHOLD = 8000;
+const FLAT_SHIPPING = 500;
+
+const readCart = () => {
+  try {
+    return JSON.parse(localStorage.getItem("cart") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+const writeCart = (cart) => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  // Lets any other mounted component (e.g. a future cart badge in NavBar)
+  // know the cart changed, since localStorage events don't fire in the
+  // same tab that wrote them.
+  window.dispatchEvent(new Event("cart-updated"));
+};
+
+export default function Cart() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    setCartItems(readCart());
+  }, []);
+
+  const itemKey = (item) =>
+    `${item.productId}-${item.chosenSize}-${item.chosenColor}`;
+
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const estimatedShipping = subtotal > 100 || cartItems.length === 0 ? 0 : 15.0;
+  const estimatedShipping =
+    cartItems.length === 0 || subtotal >= FREE_SHIPPING_THRESHOLD
+      ? 0
+      : FLAT_SHIPPING;
   const grandTotal = subtotal + estimatedShipping;
+  const amountToFreeShipping = FREE_SHIPPING_THRESHOLD - subtotal;
 
-  const handleUpdateQuantity = (productId, newQuantity) => {
-    /* TODO: dispatch updateQuantity action to Redux store */
-    console.log("Update quantity:", productId, newQuantity);
+  const handleUpdateQuantity = (key, newQuantity) => {
+    if (newQuantity < 1) return;
+    const updated = cartItems.map((item) =>
+      itemKey(item) === key ? { ...item, quantity: newQuantity } : item,
+    );
+    setCartItems(updated);
+    writeCart(updated);
   };
 
-  const handleRemoveItem = (productId) => {
-    /* TODO: dispatch removeFromCart action to Redux store */
-    console.log("Remove item:", productId);
+  const handleRemoveItem = (key) => {
+    const updated = cartItems.filter((item) => itemKey(item) !== key);
+    setCartItems(updated);
+    dispatch(decrementProductsOrderedNumber());
+    writeCart(updated);
   };
 
   const handleProceedToCheckout = () => {
-    /* TODO: navigate to /checkout or trigger checkout initialization */
-    console.log("Navigating to checkout...");
+    navigate("/checkout");
   };
 
   // Empty Cart View
@@ -82,94 +126,136 @@ export default function Cart({ cartItems = defaultMockCart }) {
           </Link>
         </div>
 
+        {/* Free Shipping Progress */}
+        {amountToFreeShipping > 0 && (
+          <div className="mb-8 border border-black/10 bg-white p-4 sm:p-5">
+            <div className="flex items-center gap-2 text-xs text-footer/80 mb-2.5">
+              <Truck className="w-4 h-4 text-accent shrink-0" />
+              <span>
+                Add{" "}
+                <span className="font-bold text-footer">
+                  {currency(amountToFreeShipping)}
+                </span>{" "}
+                more for free shipping
+              </span>
+            </div>
+            <div className="h-1.5 bg-hero overflow-hidden">
+              <div
+                className="h-full bg-accent transition-all duration-500"
+                style={{
+                  width: `${Math.min(
+                    (subtotal / FREE_SHIPPING_THRESHOLD) * 100,
+                    100,
+                  )}%`,
+                }}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Main Content Layout */}
         <div className="grid gap-10 lg:grid-cols-[1fr_380px] lg:items-start">
           {/* Left Column: Cart Items List */}
           <div className="space-y-4">
-            {cartItems.map((item) => (
-              <div
-                key={`${item.productId}-${item.chosenSize}-${item.chosenColor}`}
-                className="border border-black/10 bg-white p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
-              >
-                {/* Item Details */}
-                <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
-                  <div className="w-20 h-24 sm:w-24 sm:h-30 shrink-0 overflow-hidden border border-black/10 bg-hero">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
+            {cartItems.map((item) => {
+              const key = itemKey(item);
+              return (
+                <div
+                  key={key}
+                  className="border border-black/10 bg-white p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+                >
+                  {/* Item Details */}
+                  <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
+                    <Link
+                      to={`/shop/${item.productId}`}
+                      className="w-20 h-24 sm:w-24 sm:h-30 shrink-0 overflow-hidden border border-black/10 bg-hero"
+                    >
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-footer/20 text-2xl">
+                          👕
+                        </div>
+                      )}
+                    </Link>
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                        TALQIN
+                      </p>
+                      <Link
+                        to={`/shop/${item.productId}`}
+                        className="font-heading text-base font-bold uppercase text-footer hover:text-accent transition-colors"
+                      >
+                        {item.name}
+                      </Link>
+                      <p className="text-xs text-footer/60">
+                        Size:{" "}
+                        <span className="font-bold text-footer">
+                          {item.chosenSize}
+                        </span>{" "}
+                        | Color:{" "}
+                        <span className="font-bold text-footer">
+                          {item.chosenColor}
+                        </span>
+                      </p>
+                      <p className="font-heading font-bold text-sm text-footer pt-2 sm:hidden">
+                        {currency(item.price * item.quantity)}
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
-                      TALQIN
-                    </p>
-                    <h3 className="font-heading text-base font-bold uppercase text-footer">
-                      {item.name}
-                    </h3>
-                    <p className="text-xs text-footer/60">
-                      Size:{" "}
-                      <span className="font-bold text-footer">
-                        {item.chosenSize}
-                      </span>{" "}
-                      | Color:{" "}
-                      <span className="font-bold text-footer">
-                        {item.chosenColor}
+
+                  {/* Controls & Price */}
+                  <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto border-t sm:border-t-0 border-black/10 pt-4 sm:pt-0">
+                    {/* Quantity Selector */}
+                    <div className="flex items-center border border-black/10 bg-primary">
+                      <button
+                        type="button"
+                        aria-label="Decrease Quantity"
+                        onClick={() =>
+                          handleUpdateQuantity(key, item.quantity - 1)
+                        }
+                        className="p-2 text-footer hover:text-accent transition-colors disabled:opacity-30"
+                        disabled={item.quantity <= 1}
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </button>
+                      <span className="px-3 font-heading text-xs font-bold">
+                        {item.quantity}
                       </span>
-                    </p>
-                    <p className="font-heading font-bold text-sm text-footer pt-2 sm:hidden">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
+                      <button
+                        type="button"
+                        aria-label="Increase Quantity"
+                        onClick={() =>
+                          handleUpdateQuantity(key, item.quantity + 1)
+                        }
+                        className="p-2 text-footer hover:text-accent transition-colors"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
 
-                {/* Controls & Price */}
-                <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto border-t sm:border-t-0 border-black/10 pt-4 sm:pt-0">
-                  {/* Quantity Selector */}
-                  <div className="flex items-center border border-black/10 bg-primary">
+                    {/* Total Price for Item */}
+                    <p className="font-heading font-bold text-base text-footer hidden sm:block min-w-[90px] text-right">
+                      {currency(item.price * item.quantity)}
+                    </p>
+
+                    {/* Remove Button */}
                     <button
                       type="button"
-                      aria-label="Decrease Quantity"
-                      onClick={() =>
-                        handleUpdateQuantity(item.productId, item.quantity - 1)
-                      }
-                      className="p-2 text-footer hover:text-accent transition-colors disabled:opacity-30"
-                      disabled={item.quantity <= 1}
+                      aria-label={`Remove ${item.name}`}
+                      onClick={() => handleRemoveItem(key)}
+                      className="p-2 text-footer/40 hover:text-red-600 transition-colors"
                     >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <span className="px-3 font-heading text-xs font-bold">
-                      {item.quantity}
-                    </span>
-                    <button
-                      type="button"
-                      aria-label="Increase Quantity"
-                      onClick={() =>
-                        handleUpdateQuantity(item.productId, item.quantity + 1)
-                      }
-                      className="p-2 text-footer hover:text-accent transition-colors"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-
-                  {/* Total Price for Item */}
-                  <p className="font-heading font-bold text-base text-footer hidden sm:block min-w-[90px] text-right">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </p>
-
-                  {/* Remove Button */}
-                  <button
-                    type="button"
-                    aria-label={`Remove ${item.name}`}
-                    onClick={() => handleRemoveItem(item.productId)}
-                    className="p-2 text-footer/40 hover:text-red-600 transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Right Column: Order Summary Box */}
@@ -182,7 +268,7 @@ export default function Cart({ cartItems = defaultMockCart }) {
               <div className="flex justify-between text-footer/80">
                 <span>Subtotal</span>
                 <span className="font-bold text-footer">
-                  ${subtotal.toFixed(2)}
+                  {currency(subtotal)}
                 </span>
               </div>
               <div className="flex justify-between text-footer/80">
@@ -190,13 +276,13 @@ export default function Cart({ cartItems = defaultMockCart }) {
                 <span className="font-bold text-footer">
                   {estimatedShipping === 0
                     ? "FREE"
-                    : `$${estimatedShipping.toFixed(2)}`}
+                    : currency(estimatedShipping)}
                 </span>
               </div>
               <div className="pt-3 border-t border-black/10 flex justify-between text-sm font-bold text-footer">
                 <span>Total</span>
                 <span className="font-heading text-lg text-accent">
-                  ${grandTotal.toFixed(2)}
+                  {currency(grandTotal)}
                 </span>
               </div>
             </div>
@@ -212,8 +298,7 @@ export default function Cart({ cartItems = defaultMockCart }) {
             </button>
 
             <div className="pt-4 border-t border-black/10 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-footer/60">
-              <ShieldCheck className="w-4 h-4 text-accent" /> Encrypted 256-Bit
-              Checkout
+              <ShieldCheck className="w-4 h-4 text-accent" /> Secure Checkout
             </div>
           </div>
         </div>
@@ -221,27 +306,3 @@ export default function Cart({ cartItems = defaultMockCart }) {
     </div>
   );
 }
-
-// Fallback Mock Cart Items
-const defaultMockCart = [
-  {
-    productId: "TLQ-001",
-    name: "Heavyweight Oversized Thobe Tee",
-    image:
-      "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=800&q=80",
-    price: 68.0,
-    chosenSize: "L",
-    chosenColor: "Onyx Black",
-    quantity: 1,
-  },
-  {
-    productId: "TLQ-002",
-    name: "Relaxed Fit Utility Cargo",
-    image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
-    price: 98.0,
-    chosenSize: "XL",
-    chosenColor: "Raw Olive",
-    quantity: 1,
-  },
-];

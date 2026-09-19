@@ -4,12 +4,34 @@ import API from "@/api/axiosInstance";
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (
-    { page = 1, limit = 10, name, id, status, category },
+    {
+      page = 1,
+      limit = 10,
+      name,
+      id,
+      status,
+      category,
+      minPrice,
+      maxPrice,
+      availableSizes,
+      availableColors,
+    },
     { rejectWithValue },
   ) => {
     try {
       const response = await API.get("/products", {
-        params: { page, limit, name, id, status, category },
+        params: {
+          page,
+          limit,
+          name,
+          id,
+          status,
+          category,
+          minPrice,
+          maxPrice,
+          availableSizes,
+          availableColors,
+        },
       });
       return response.data;
     } catch (error) {
@@ -66,6 +88,21 @@ export const editProduct = createAsyncThunk(
     }
   },
 );
+export const fetchLatestProducts = createAsyncThunk(
+  "products/fetchLatestProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await API.get("/products/latest");
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch latest products";
+      return rejectWithValue(errorMessage);
+    }
+  },
+);
 
 const productsSlice = createSlice({
   name: "products",
@@ -78,10 +115,23 @@ const productsSlice = createSlice({
     totalPages: 0,
     currentPage: 1,
     error: null,
+    latestProducts: [],
+    latestLoading: false,
+    latestError: null,
+    productsOrderedNumber:
+      JSON.parse(localStorage.getItem("cart"))?.length || 0,
   },
   reducers: {
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
+    },
+    incrementProductsOrderedNumber: (state) => {
+      state.productsOrderedNumber += 1;
+    },
+    decrementProductsOrderedNumber: (state) => {
+      if (state.productsOrderedNumber > 0) {
+        state.productsOrderedNumber -= 1;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -170,8 +220,25 @@ const productsSlice = createSlice({
       .addCase(editProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchLatestProducts.pending, (state) => {
+        state.latestLoading = true;
+        state.latestError = null;
+      })
+      .addCase(fetchLatestProducts.fulfilled, (state, action) => {
+        state.latestLoading = false;
+        state.latestError = null;
+        state.latestProducts = action.payload;
+      })
+      .addCase(fetchLatestProducts.rejected, (state, action) => {
+        state.latestLoading = false;
+        state.latestError = action.payload;
       });
   },
 });
-export const { setCurrentPage } = productsSlice.actions;
+export const {
+  setCurrentPage,
+  incrementProductsOrderedNumber,
+  decrementProductsOrderedNumber,
+} = productsSlice.actions;
 export default productsSlice.reducer;

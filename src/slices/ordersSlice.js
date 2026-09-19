@@ -4,12 +4,12 @@ import API from "@/api/axiosInstance";
 export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
   async (
-    { page = 1, limit = 10, productId, phone, status },
+    { page = 1, limit = 10, productId, phone, status, userId },
     { rejectWithValue },
   ) => {
     try {
       const response = await API.get("/orders", {
-        params: { page, limit, productId, phone, status },
+        params: { page, limit, productId, phone, status, userId },
       });
       return response.data;
     } catch (error) {
@@ -17,6 +17,39 @@ export const fetchOrders = createAsyncThunk(
         error.response?.data?.message ||
         error.message ||
         "Failed to fetch orders";
+      return rejectWithValue(errorMessage);
+    }
+  },
+);
+export const fetchMyOrders = createAsyncThunk(
+  "orders/fetchMyOrders",
+  async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
+    try {
+      const response = await API.get("/orders/my-orders", {
+        params: { page, limit },
+      });
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch my orders";
+      return rejectWithValue(errorMessage);
+    }
+  },
+);
+
+export const createOrder = createAsyncThunk(
+  "orders/createOrder",
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await API.post("/orders", orderData);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to place order";
       return rejectWithValue(errorMessage);
     }
   },
@@ -63,10 +96,17 @@ const ordersSlice = createSlice({
     currentPage: 1,
     loading: false,
     error: null,
+    createLoading: false,
+    createError: null,
+    lastCreatedOrder: null,
   },
   reducers: {
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
+    },
+    clearCreateOrderState: (state) => {
+      state.createError = null;
+      state.lastCreatedOrder = null;
     },
   },
   extraReducers: (builder) => {
@@ -88,6 +128,35 @@ const ordersSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchMyOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMyOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.orders = action.payload.orders;
+        state.totalOrders = action.payload.totalOrders;
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
+      })
+      .addCase(fetchMyOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(createOrder.pending, (state) => {
+        state.createLoading = true;
+        state.createError = null;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.createLoading = false;
+        state.createError = null;
+        state.lastCreatedOrder = action.payload;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.createLoading = false;
+        state.createError = action.payload;
       })
       .addCase(deleteOrder.pending, (state) => {
         state.loading = true;
@@ -162,5 +231,5 @@ const ordersSlice = createSlice({
       });
   },
 });
-export const { setCurrentPage } = ordersSlice.actions;
+export const { setCurrentPage, clearCreateOrderState } = ordersSlice.actions;
 export default ordersSlice.reducer;

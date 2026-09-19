@@ -1,24 +1,70 @@
-import { useState } from "react";
-import { Lock, ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  Lock,
+  ShieldCheck,
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+  LoaderCircle,
+  ShoppingBag,
+} from "lucide-react";
+import { createOrder, clearCreateOrderState } from "@/slices/ordersSlice";
+import { fetchUserById } from "@/slices/usersSlice";
 
-export default function Checkout({ orderItems = defaultOrderSummary }) {
+const currency = (value) => `${Number(value || 0).toLocaleString()} DZD`;
+const FLAT_SHIPPING = 500;
+const FREE_SHIPPING_THRESHOLD = 8000;
+
+const readCart = () => {
+  try {
+    return JSON.parse(localStorage.getItem("cart") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+export default function Checkout() {
+  const dispatch = useDispatch();
+
+  const localSavedUser = JSON.parse(localStorage.getItem("user") || "null");
+  useEffect(() => {
+    if (localSavedUser && localSavedUser._id) {
+      dispatch(fetchUserById(localSavedUser._id));
+    }
+  }, [dispatch, localSavedUser]);
+
+  const { user: SavedUser } = useSelector((state) => state.users);
+  console.log("SavedUser in Checkout:", SavedUser);
+  const { createLoading, createError, lastCreatedOrder } = useSelector(
+    (state) => state.orders,
+  );
+
+  const [orderItems, setOrderItems] = useState([]);
+
+  useEffect(() => {
+    setOrderItems(readCart());
+    dispatch(clearCreateOrderState());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    streetAddress: "",
-    city: "",
-    postalCode: "",
-    country: "United States",
-    paymentMethod: "card",
+    fullName: SavedUser?.name || "",
+    email: SavedUser?.email || "",
+    phone: SavedUser?.phone || "",
+    address: SavedUser?.address || "",
+    paymentMethod: "cod",
   });
 
   const subtotal = orderItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const shipping = 15.0;
+  const shipping =
+    orderItems.length === 0 || subtotal >= FREE_SHIPPING_THRESHOLD
+      ? 0
+      : FLAT_SHIPPING;
   const total = subtotal + shipping;
 
   const handleChange = (e) => {
@@ -26,12 +72,107 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    /* TODO: dispatch submitOrder action to Redux store / execute API request */
-    /* Payload structure: { customerDetails: formData, items: orderItems, totalAmount: total } */
-    console.log("Submitting order:", { formData, orderItems, total });
+    if (orderItems.length === 0) return;
+
+    const products = orderItems.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      chosenSize: item.chosenSize,
+      chosenColor: item.chosenColor,
+    }));
+
+    const payload = {
+      products,
+      ...(SavedUser
+        ? { userId: SavedUser._id || SavedUser.id }
+        : {
+            guestInfo: {
+              name: formData.fullName,
+              email: formData.email,
+              phone: formData.phone,
+              address: formData.address,
+            },
+          }),
+    };
+
+    try {
+      await dispatch(createOrder(payload)).unwrap();
+      localStorage.removeItem("cart");
+      window.dispatchEvent(new Event("cart-updated"));
+    } catch {
+      // createError from the slice will render below
+    }
   };
+
+  // Order Confirmed View
+  if (lastCreatedOrder) {
+    return (
+      <div className="bg-primary min-h-[80vh] flex items-center justify-center py-16 px-4 font-body">
+        <div className="text-center max-w-md border border-black/10 bg-white p-10">
+          <div className="mx-auto w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 text-emerald-600">
+            <CheckCircle2 className="w-8 h-8" />
+          </div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-2">
+            Order Placed
+          </p>
+          <h2 className="font-heading text-2xl font-black uppercase tracking-tight text-footer mb-3">
+            Thank You
+          </h2>
+          <p className="text-xs text-footer/70 mb-2">
+            Your order has been received and is being processed.
+          </p>
+          {lastCreatedOrder._id && (
+            <p className="text-[11px] font-mono text-accent mb-8">
+              Order ID: {lastCreatedOrder._id.slice(-8).toUpperCase()}
+            </p>
+          )}
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/account"
+              className="w-full bg-footer text-primary py-3.5 px-6 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-accent hover:text-footer inline-flex items-center justify-center gap-2"
+            >
+              View My Orders
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/shop"
+              className="w-full border border-black/10 text-footer py-3.5 px-6 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-black/5 inline-flex items-center justify-center gap-2"
+            >
+              Continue Shopping
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty Cart Guard
+  if (orderItems.length === 0) {
+    return (
+      <div className="bg-primary min-h-[70vh] flex items-center justify-center py-16 px-4 font-body">
+        <div className="text-center max-w-md border border-black/10 bg-white p-10">
+          <div className="mx-auto w-16 h-16 bg-hero border border-black/10 flex items-center justify-center mb-6 text-footer">
+            <ShoppingBag className="w-8 h-8" />
+          </div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-2">
+            Nothing to Check Out
+          </p>
+          <h2 className="font-heading text-2xl font-black uppercase tracking-tight text-footer mb-4">
+            Your Cart is Empty
+          </h2>
+          <Link
+            to="/shop"
+            className="w-full bg-footer text-primary py-3.5 px-6 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-accent hover:text-footer inline-flex items-center justify-center gap-2"
+          >
+            Browse the Shop
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-primary min-h-screen py-10 lg:py-16 font-body text-footer">
@@ -53,6 +194,16 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
             ← Return to Cart
           </Link>
         </div>
+
+        {createError && (
+          <div
+            role="alert"
+            className="flex items-center gap-3 border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm mb-8"
+          >
+            <AlertCircle className="h-5 w-5 shrink-0" />
+            <p>{createError}</p>
+          </div>
+        )}
 
         {/* Two-Column Form Layout */}
         <form
@@ -124,7 +275,7 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
                   required
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+1 (555) 000-0000"
+                  placeholder="+213 555 000 000"
                   className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40 focus:border-footer transition-colors"
                 />
               </div>
@@ -141,79 +292,21 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
 
               <div>
                 <label
-                  htmlFor="streetAddress"
+                  htmlFor="address"
                   className="block text-[11px] font-bold uppercase tracking-wider text-footer mb-2"
                 >
-                  Street Address
+                  Full Address
                 </label>
-                <input
-                  type="text"
-                  id="streetAddress"
-                  name="streetAddress"
+                <textarea
+                  id="address"
+                  name="address"
                   required
-                  value={formData.streetAddress}
+                  rows={3}
+                  value={formData.address}
                   onChange={handleChange}
-                  placeholder="124 Urban District Way"
-                  className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40 focus:border-footer transition-colors"
+                  placeholder="Street, City, Wilaya, Postal Code"
+                  className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40 focus:border-footer transition-colors resize-none"
                 />
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div>
-                  <label
-                    htmlFor="city"
-                    className="block text-[11px] font-bold uppercase tracking-wider text-footer mb-2"
-                  >
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    required
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="New York"
-                    className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40 focus:border-footer transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="postalCode"
-                    className="block text-[11px] font-bold uppercase tracking-wider text-footer mb-2"
-                  >
-                    Postal Code
-                  </label>
-                  <input
-                    type="text"
-                    id="postalCode"
-                    name="postalCode"
-                    required
-                    value={formData.postalCode}
-                    onChange={handleChange}
-                    placeholder="10001"
-                    className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40 focus:border-footer transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="country"
-                    className="block text-[11px] font-bold uppercase tracking-wider text-footer mb-2"
-                  >
-                    Country
-                  </label>
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    required
-                    value={formData.country}
-                    onChange={handleChange}
-                    className="w-full border border-black/10 bg-primary px-4 py-3 text-sm text-footer outline-none placeholder:text-footer/40 focus:border-footer transition-colors"
-                  />
-                </div>
               </div>
             </div>
 
@@ -227,26 +320,6 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
               </h2>
 
               <div className="grid gap-3 sm:grid-cols-2">
-                <label
-                  className={`flex items-center gap-3 p-4 border cursor-pointer transition-all ${
-                    formData.paymentMethod === "card"
-                      ? "border-footer bg-footer/5"
-                      : "border-black/10 bg-primary"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="card"
-                    checked={formData.paymentMethod === "card"}
-                    onChange={handleChange}
-                    className="accent-footer"
-                  />
-                  <span className="text-xs font-bold uppercase tracking-wider">
-                    Credit / Debit Card
-                  </span>
-                </label>
-
                 <label
                   className={`flex items-center gap-3 p-4 border cursor-pointer transition-all ${
                     formData.paymentMethod === "cod"
@@ -266,6 +339,22 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
                     Cash on Delivery
                   </span>
                 </label>
+
+                <label
+                  className="flex items-center gap-3 p-4 border border-black/5 bg-hero/50 cursor-not-allowed opacity-50"
+                  title="Coming soon"
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    disabled
+                    className="accent-footer"
+                  />
+                  <span className="text-xs font-bold uppercase tracking-wider">
+                    Card — Coming Soon
+                  </span>
+                </label>
               </div>
             </div>
           </div>
@@ -277,18 +366,26 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
             </h2>
 
             {/* Itemized List */}
-            <div className="divide-y divide-black/5 max-h-72 overflow-y-auto pr-1">
+            <div className="divide-y divide-black/5 max-h-72 overflow-y-auto pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {orderItems.map((item) => (
                 <div
-                  key={`${item.productId}-${item.chosenSize}`}
+                  key={`${item.productId}-${item.chosenSize}-${item.chosenColor}`}
                   className="py-3 flex items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-3">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-12 h-14 object-cover border border-black/10 bg-hero"
-                    />
+                    <div className="w-12 h-14 shrink-0 overflow-hidden border border-black/10 bg-hero">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-footer/20 text-sm">
+                          👕
+                        </div>
+                      )}
+                    </div>
                     <div>
                       <p className="text-xs font-bold text-footer uppercase">
                         {item.name}
@@ -298,8 +395,8 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs font-bold text-footer">
-                    ${(item.price * item.quantity).toFixed(2)}
+                  <p className="text-xs font-bold text-footer whitespace-nowrap">
+                    {currency(item.price * item.quantity)}
                   </p>
                 </div>
               ))}
@@ -310,19 +407,19 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
               <div className="flex justify-between text-footer/80">
                 <span>Subtotal</span>
                 <span className="font-bold text-footer">
-                  ${subtotal.toFixed(2)}
+                  {currency(subtotal)}
                 </span>
               </div>
               <div className="flex justify-between text-footer/80">
-                <span>Flat Shipping</span>
+                <span>Shipping</span>
                 <span className="font-bold text-footer">
-                  ${shipping.toFixed(2)}
+                  {shipping === 0 ? "FREE" : currency(shipping)}
                 </span>
               </div>
               <div className="pt-3 border-t border-black/10 flex justify-between text-sm font-bold text-footer">
                 <span>Total Due</span>
                 <span className="font-heading text-xl text-accent">
-                  ${total.toFixed(2)}
+                  {currency(total)}
                 </span>
               </div>
             </div>
@@ -330,11 +427,18 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-accent text-footer py-4 px-6 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-footer hover:text-primary flex items-center justify-center gap-2 group"
+              disabled={createLoading}
+              className="w-full bg-accent text-footer py-4 px-6 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-footer hover:text-primary flex items-center justify-center gap-2 group disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <Lock className="w-4 h-4" />
-              Place Order
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              {createLoading ? (
+                <LoaderCircle className="w-4 h-4 animate-spin" />
+              ) : (
+                <Lock className="w-4 h-4" />
+              )}
+              {createLoading ? "Placing Order..." : "Place Order"}
+              {!createLoading && (
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              )}
             </button>
 
             <div className="space-y-2 text-[10px] text-footer/60 border-t border-black/10 pt-4">
@@ -353,25 +457,3 @@ export default function Checkout({ orderItems = defaultOrderSummary }) {
     </div>
   );
 }
-
-// Fallback Mock Checkout Data
-const defaultOrderSummary = [
-  {
-    productId: "TLQ-001",
-    name: "Heavyweight Oversized Thobe Tee",
-    image:
-      "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=800&q=80",
-    price: 68.0,
-    chosenSize: "L",
-    quantity: 1,
-  },
-  {
-    productId: "TLQ-002",
-    name: "Relaxed Fit Utility Cargo",
-    image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
-    price: 98.0,
-    chosenSize: "XL",
-    quantity: 1,
-  },
-];

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Plus,
   Minus,
@@ -6,60 +8,159 @@ import {
   ShieldCheck,
   Truck,
   RefreshCw,
+  LoaderCircle,
+  AlertCircle,
+  CheckCircle,
+  PackageX,
 } from "lucide-react";
+import {
+  fetchProducts,
+  incrementProductsOrderedNumber,
+} from "@/slices/productsSlice";
 
-export default function ProductDetail({ product = mockProduct }) {
-  // Fallback defaults if props are not provided directly
+const currency = (value) => `${Number(value || 0).toLocaleString()} DZD`;
+
+export default function ProductDetail() {
+  const { productId } = useParams();
+  const dispatch = useDispatch();
+
   const {
-    id = "TLQ-001",
-    name = "Heavyweight Oversized Thobe Tee",
-    description = "Crafted from 450 GSM organic cotton. Cut with an extended modest length, dropped shoulders, and a structured collar for a clean streetwear silhouette.",
-    price = 68.0,
-    image = "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=1200&q=80",
-    availableSizes = ["S", "M", "L", "XL", "XXL"],
-    availableColors = [
-      { name: "Onyx Black", hex: "#121212" },
-      { name: "Desert Sand", hex: "#C2B280" },
-      { name: "Raw Olive", hex: "#4A5D4E" },
-    ],
-  } = product;
+    products = [],
+    loading,
+    error,
+  } = useSelector((state) => state.products);
 
-  const [selectedSize, setSelectedSize] = useState(availableSizes[2] || "");
-  const [selectedColor, setSelectedColor] = useState(
-    availableColors[0]?.name || "",
-  );
+  useEffect(() => {
+    dispatch(fetchProducts({ id: productId, limit: 1 }));
+  }, [dispatch, productId]);
+
+  const product = products.find((p) => p._id === productId);
+
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [addedMsg, setAddedMsg] = useState("");
+
+  // Initialize selections once the product has loaded
+  useEffect(() => {
+    if (product) {
+      setSelectedSize(product.availableSizes?.[0] || "");
+      setSelectedColor(product.availableColors?.[0] || "");
+      setQuantity(1);
+    }
+  }, [product]);
+
+  const inStock = (product?.quantity ?? 0) > 0;
+  const maxQuantity = product?.quantity ?? 1;
 
   const handleDecreaseQuantity = () => {
-    /* TODO: update local quantity state or trigger Redux action */
     if (quantity > 1) setQuantity((prev) => prev - 1);
   };
 
   const handleIncreaseQuantity = () => {
-    /* TODO: update local quantity state or trigger Redux action */
-    setQuantity((prev) => prev + 1);
+    if (quantity < maxQuantity) setQuantity((prev) => prev + 1);
   };
 
   const handleAddToCart = () => {
-    /* TODO: dispatch addToCart action to Redux store / context */
-    /* Payload structure: { productId: id, name, price, image, selectedSize, selectedColor, quantity } */
-    console.log("Adding to cart:", {
-      id,
-      name,
-      price,
-      selectedSize,
-      selectedColor,
+    if (!selectedSize || !selectedColor || !inStock) return;
+
+    const newItem = {
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      chosenSize: selectedSize,
+      chosenColor: selectedColor,
       quantity,
-    });
+    };
+
+    // Simple localStorage-based cart, matching the item shape Cart.jsx expects.
+    // Swap this for a cartSlice thunk if/when you add one.
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const matchIndex = existingCart.findIndex(
+      (item) =>
+        item.productId === newItem.productId &&
+        item.chosenSize === newItem.chosenSize &&
+        item.chosenColor === newItem.chosenColor,
+    );
+
+    if (matchIndex !== -1) {
+      existingCart[matchIndex].quantity += quantity;
+    } else {
+      existingCart.push(newItem);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+    dispatch(incrementProductsOrderedNumber());
+    setAddedMsg("Added to cart.");
+    setTimeout(() => setAddedMsg(""), 3000);
   };
+
+  if (loading) {
+    return (
+      <div className="bg-primary min-h-screen flex items-center justify-center">
+        <LoaderCircle className="w-8 h-8 animate-spin text-accent" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-primary min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-md border border-black/10 bg-white p-10">
+          <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-4" />
+          <p className="text-sm text-footer/70">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="bg-primary min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-md border border-black/10 bg-white p-10">
+          <PackageX className="w-8 h-8 text-footer/30 mx-auto mb-4" />
+          <p className="font-heading text-xl font-bold uppercase text-footer mb-2">
+            Product Not Found
+          </p>
+          <p className="text-xs text-footer/60 mb-6">
+            This item may have been removed or is no longer available.
+          </p>
+          <Link
+            to="/shop"
+            className="inline-flex items-center gap-2 bg-footer text-primary py-3 px-6 font-heading text-xs font-bold uppercase tracking-[0.2em] hover:bg-accent hover:text-footer transition"
+          >
+            Back to Shop
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const {
+    _id: id,
+    name,
+    description,
+    price,
+    image,
+    category,
+    availableSizes = [],
+    availableColors = [],
+  } = product;
 
   return (
     <div className="bg-primary min-h-screen py-10 lg:py-16 font-body text-footer">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
         <div className="mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-footer/50 flex items-center gap-2">
-          <span>Home</span> / <span>Shop</span> /{" "}
-          <span className="text-footer">{name}</span>
+          <Link to="/" className="hover:text-footer transition-colors">
+            Home
+          </Link>{" "}
+          /{" "}
+          <Link to="/shop" className="hover:text-footer transition-colors">
+            Shop
+          </Link>{" "}
+          / <span className="text-footer">{name}</span>
         </div>
 
         {/* Product Grid */}
@@ -67,14 +168,29 @@ export default function ProductDetail({ product = mockProduct }) {
           {/* Left Column: Product Image Gallery */}
           <div className="space-y-4">
             <div className="relative aspect-[4/5] w-full overflow-hidden border border-black/10 bg-hero">
-              <img
-                src={image}
-                alt={name}
-                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-              />
-              <span className="absolute top-4 left-4 bg-footer text-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em]">
-                Modest Oversized Fit
-              </span>
+              {image ? (
+                <img
+                  src={image}
+                  alt={name}
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+              ) : (
+                <div className="h-full w-full flex items-center justify-center text-footer/20 text-7xl">
+                  👕
+                </div>
+              )}
+              {!inStock && (
+                <div className="absolute inset-0 bg-footer/60 flex items-center justify-center">
+                  <span className="text-primary font-bold text-sm uppercase tracking-[0.25em]">
+                    Sold Out
+                  </span>
+                </div>
+              )}
+              {category && (
+                <span className="absolute top-4 left-4 bg-footer text-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em]">
+                  {category}
+                </span>
+              )}
             </div>
           </div>
 
@@ -83,7 +199,7 @@ export default function ProductDetail({ product = mockProduct }) {
             <div>
               {/* Category / ID Badge */}
               <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-2">
-                Drop 04 // SKU: {id}
+                SKU: {id.slice(-8).toUpperCase()}
               </p>
 
               {/* Title & Price */}
@@ -91,84 +207,94 @@ export default function ProductDetail({ product = mockProduct }) {
                 {name}
               </h1>
               <p className="font-heading text-2xl font-bold text-footer mb-6">
-                ${price.toFixed(2)}
+                {currency(price)}
               </p>
 
               {/* Description */}
-              <p className="text-sm leading-relaxed text-footer/80 mb-8 max-w-xl">
-                {description}
-              </p>
+              {description && (
+                <p className="text-sm leading-relaxed text-footer/80 mb-8 max-w-xl">
+                  {description}
+                </p>
+              )}
 
               <hr className="border-black/10 my-6" />
 
+              {addedMsg && (
+                <div
+                  role="status"
+                  className="flex items-center gap-3 border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-700 text-sm mb-6"
+                >
+                  <CheckCircle className="h-5 w-5 shrink-0" />
+                  <p>{addedMsg}</p>
+                </div>
+              )}
+
               {/* Color Selection */}
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
-                  <span>Color</span>
-                  <span className="text-accent">{selectedColor}</span>
+              {availableColors.length > 0 && (
+                <div className="space-y-3 mb-6">
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+                    <span>Color</span>
+                    <span className="text-accent">{selectedColor}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {availableColors.map((color) => (
+                      <button
+                        key={color}
+                        type="button"
+                        onClick={() => setSelectedColor(color)}
+                        className={`px-4 py-2.5 text-xs font-bold uppercase tracking-wider border transition-all ${
+                          selectedColor === color
+                            ? "border-footer bg-footer text-primary"
+                            : "border-black/10 bg-white text-footer hover:border-black/40"
+                        }`}
+                      >
+                        {color}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {availableColors.map((color) => (
-                    <button
-                      key={color.name}
-                      type="button"
-                      onClick={() => {
-                        /* TODO: set chosen color in state */
-                        setSelectedColor(color.name);
-                      }}
-                      className={`flex items-center gap-2 border px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${
-                        selectedColor === color.name
-                          ? "border-footer bg-footer text-primary"
-                          : "border-black/10 bg-white text-footer hover:border-black/40"
-                      }`}
-                    >
-                      <span
-                        className="h-3 w-3 rounded-full border border-black/20"
-                        style={{ backgroundColor: color.hex }}
-                      />
-                      {color.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
 
               {/* Size Selection */}
-              <div className="space-y-3 mb-8">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
-                  <span>Size</span>
-                  <span className="text-footer/50 text-[10px]">
-                    Modest Cut (Runs True to Size)
-                  </span>
+              {availableSizes.length > 0 && (
+                <div className="space-y-3 mb-8">
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+                    <span>Size</span>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    {availableSizes.map((size) => (
+                      <button
+                        key={size}
+                        type="button"
+                        onClick={() => setSelectedSize(size)}
+                        className={`py-3.5 border text-center text-xs font-bold uppercase tracking-wider transition-all ${
+                          selectedSize === size
+                            ? "border-footer bg-footer text-primary"
+                            : "border-black/10 bg-white text-footer hover:border-black/40"
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="grid grid-cols-5 gap-2">
-                  {availableSizes.map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      onClick={() => {
-                        /* TODO: set chosen size in state */
-                        setSelectedSize(size);
-                      }}
-                      className={`py-3.5 border text-center text-xs font-bold uppercase tracking-wider transition-all ${
-                        selectedSize === size
-                          ? "border-footer bg-footer text-primary"
-                          : "border-black/10 bg-white text-footer hover:border-black/40"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
 
               {/* Quantity Selector & Add to Cart */}
               <div className="space-y-4">
-                <label
-                  htmlFor="quantity-selector"
-                  className="block text-xs font-bold uppercase tracking-wider"
-                >
-                  Quantity
-                </label>
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="quantity-selector"
+                    className="block text-xs font-bold uppercase tracking-wider"
+                  >
+                    Quantity
+                  </label>
+                  {inStock && (
+                    <span className="text-[10px] text-footer/50">
+                      {maxQuantity} available
+                    </span>
+                  )}
+                </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   {/* Quantity Input Controls */}
                   <div className="flex items-center border border-black/10 bg-white w-full sm:w-36 justify-between px-3 py-3">
@@ -177,7 +303,7 @@ export default function ProductDetail({ product = mockProduct }) {
                       aria-label="Decrease Quantity"
                       onClick={handleDecreaseQuantity}
                       className="p-1 text-footer hover:text-accent transition-colors disabled:opacity-30"
-                      disabled={quantity <= 1}
+                      disabled={quantity <= 1 || !inStock}
                     >
                       <Minus className="w-4 h-4" />
                     </button>
@@ -191,7 +317,8 @@ export default function ProductDetail({ product = mockProduct }) {
                       type="button"
                       aria-label="Increase Quantity"
                       onClick={handleIncreaseQuantity}
-                      className="p-1 text-footer hover:text-accent transition-colors"
+                      className="p-1 text-footer hover:text-accent transition-colors disabled:opacity-30"
+                      disabled={quantity >= maxQuantity || !inStock}
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -201,10 +328,11 @@ export default function ProductDetail({ product = mockProduct }) {
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    className="w-full bg-accent text-footer py-4 px-8 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-footer hover:text-primary flex items-center justify-center gap-3 group"
+                    disabled={!inStock || !selectedSize || !selectedColor}
+                    className="w-full bg-accent text-footer py-4 px-8 font-heading text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-footer hover:text-primary flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-accent disabled:hover:text-footer"
                   >
                     <ShoppingBag className="w-4 h-4" />
-                    Add to Cart
+                    {inStock ? "Add to Cart" : "Sold Out"}
                   </button>
                 </div>
               </div>
@@ -218,7 +346,7 @@ export default function ProductDetail({ product = mockProduct }) {
                   Fast Shipping
                 </p>
                 <p className="text-[10px] text-footer/60">
-                  Global Express Delivery
+                  Nationwide Delivery
                 </p>
               </div>
               <div className="space-y-1">
@@ -244,20 +372,3 @@ export default function ProductDetail({ product = mockProduct }) {
     </div>
   );
 }
-
-// Fallback Mock Product Data
-const mockProduct = {
-  id: "TLQ-001",
-  name: "Heavyweight Oversized Thobe Tee",
-  description:
-    "Crafted from 450 GSM organic cotton. Cut with an extended modest length, dropped shoulders, and a structured collar for a clean streetwear silhouette.",
-  price: 68.0,
-  image:
-    "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=1200&q=80",
-  availableSizes: ["S", "M", "L", "XL", "XXL"],
-  availableColors: [
-    { name: "Onyx Black", hex: "#121212" },
-    { name: "Desert Sand", hex: "#C2B280" },
-    { name: "Raw Olive", hex: "#4A5D4E" },
-  ],
-};
