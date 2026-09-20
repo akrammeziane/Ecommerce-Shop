@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function PromoSection() {
+  const navigate = useNavigate();
   return (
-    <section className="mx-auto mt-10 grid max-w-[1400px] gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8 ">
+    <section
+      className="mx-auto mt-10 grid max-w-[1400px] gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8 "
+      id="promo"
+    >
       <div className="flex  h-full min-h-[120px] flex-col justify-between bg-[#f2f2f2] p-4 sm:min-h-[140px] sm:p-5 ">
         <div>
           <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-footer/70 sm:text-[10px]">
@@ -28,7 +32,10 @@ export default function PromoSection() {
           </h3>
         </div>
 
-        <button className="mt-4 inline-flex w-fit items-center justify-center bg-white px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a] transition hover:opacity-80 sm:text-[10px]">
+        <button
+          className="mt-4 inline-flex w-fit items-center justify-center bg-white px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a] transition hover:opacity-80 sm:text-[10px]"
+          onClick={() => navigate("/shop", { state: { category: "Hoodies" } })}
+        >
           Explore
         </button>
       </div>

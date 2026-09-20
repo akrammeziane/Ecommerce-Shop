@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="mt-20 bg-footer text-primary">
       <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:px-8">
@@ -17,12 +19,62 @@ export default function Footer() {
             Shop
           </h4>
           <ul className="mt-4 space-y-2 text-sm text-primary/75">
-            <li>All products</li>
-            <li>Hoodies</li>
-            <li>T-shirts</li>
-            <li>Pants</li>
-            <li>Jackets</li>
-            <li>Accessories</li>
+            <li
+              onClick={() => navigate("/shop")}
+              className="cursor-pointer hover:text-accent transition"
+            >
+              All products
+            </li>
+            <li
+              onClick={() =>
+                navigate("/shop", {
+                  state: { category: "Hoodies", redirect: true },
+                })
+              }
+              className="cursor-pointer hover:text-accent transition"
+            >
+              Hoodies
+            </li>
+            <li
+              onClick={() =>
+                navigate("/shop", {
+                  state: { category: "T-shirts", redirect: true },
+                })
+              }
+              className="cursor-pointer hover:text-accent transition"
+            >
+              T-shirts
+            </li>
+            <li
+              onClick={() =>
+                navigate("/shop", {
+                  state: { category: "Pants", redirect: true },
+                })
+              }
+              className="cursor-pointer hover:text-accent transition"
+            >
+              Pants
+            </li>
+            <li
+              onClick={() =>
+                navigate("/shop", {
+                  state: { category: "Jackets", redirect: true },
+                })
+              }
+              className="cursor-pointer hover:text-accent transition"
+            >
+              Jackets
+            </li>
+            <li
+              onClick={() =>
+                navigate("/shop", {
+                  state: { category: "Accessories", redirect: true },
+                })
+              }
+              className="cursor-pointer hover:text-accent transition"
+            >
+              Accessories
+            </li>
           </ul>
         </div>
 

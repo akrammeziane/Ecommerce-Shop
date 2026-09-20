@@ -1,7 +1,7 @@
 import { Check, ShieldCheck, Truck, Headphones } from "lucide-react";
 
 const items = [
-  { icon: Truck, title: "Free shipping", text: "On orders over $100" },
+  { icon: Truck, title: "Free shipping", text: "On orders over 3,000 DZD" },
   { icon: Check, title: "Easy returns", text: "30-day returns" },
   { icon: ShieldCheck, title: "Secure payment", text: "100% secure checkout" },
   { icon: Headphones, title: "Customer support", text: "24/7 support" },

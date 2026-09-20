@@ -1,37 +1,40 @@
 import { useNavigate } from "react-router-dom";
+import Hoodies from "../../assets/Hoodies.jpg";
+import TShirts from "../../assets/TShirts.jpg";
+import Pants from "../../assets/Pants.jpg";
+import Jackets from "../../assets/Jackets.jpg";
+import Accessoires from "../../assets/Accessoires.jpg";
 
 const categories = [
   {
     title: "Hoodies",
-    image:
-      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80",
+    image: Hoodies,
   },
   {
     title: "T-Shirts",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80",
+    image: TShirts,
   },
   {
     title: "Pants",
-    image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80",
+    image: Pants,
   },
   {
     title: "Jackets",
-    image:
-      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80",
+    image: Jackets,
   },
   {
     title: "Accessories",
-    image:
-      "https://images.unsplash.com/photo-1521369909026-2afed882baee?auto=format&fit=crop&w=900&q=80",
+    image: Accessoires,
   },
 ];
 
 export default function CategorySection() {
   const navigate = useNavigate();
   return (
-    <section className="mx-auto mt-10 max-w-[1400px] px-4 sm:px-6 lg:px-8">
+    <section
+      className="mx-auto mt-10 max-w-[1400px] px-4 sm:px-6 lg:px-8"
+      id="collections"
+    >
       <h2 className="text-center font-heading text-3xl font-bold uppercase tracking-tight text-footer sm:text-4xl">
         Shop by category
       </h2>
@@ -46,7 +49,7 @@ export default function CategorySection() {
               <img
                 src={image}
                 alt={title}
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-105 grayscale"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
             </div>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, HeartHandshake, Shield } from "lucide-react";
+import aboutImage from "../../assets/aboutImage.jpg";
 
 export default function AboutSection() {
   return (
@@ -13,7 +14,7 @@ export default function AboutSection() {
           <div className="relative">
             <div className="relative aspect-[4/5] w-full overflow-hidden border border-black/10 bg-hero">
               <img
-                src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=1200&q=80"
+                src={aboutImage}
                 alt="Talqin Modest Islamic Men Streetwear"
                 className="h-full w-full object-cover contrast-105 hover:scale-105 transition-all duration-700"
               />
