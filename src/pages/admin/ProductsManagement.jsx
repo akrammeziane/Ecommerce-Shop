@@ -16,6 +16,7 @@ import {
   Tag,
   ImageIcon,
   Eye,
+  Upload,
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +52,10 @@ export default function ProductsManagement() {
   const [statusFilter, setstatusFilter] = useState("ALL");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [Debounced, setDebounced] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
+  const [editImagePreview, setEditImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [editImageFile, setEditImageFile] = useState(null);
   const isMongoId = (str) => /^[0-9a-fA-F]{24}$/.test(str);
 
   useEffect(() => {
@@ -93,6 +98,7 @@ export default function ProductsManagement() {
           totalOutOfStock: 0,
         },
     );
+  console.log("the products from store are ", productsFromStore);
 
   const products = useMemo(
     () =>
@@ -113,7 +119,7 @@ export default function ProductsManagement() {
             : product.quantity < 10
               ? "Low Stock"
               : "In Stock",
-        image: "🛍️",
+        image: product.image?.startsWith("https") ? product.image : "🛍️",
       })),
     [productsFromStore],
   );
@@ -241,6 +247,97 @@ export default function ProductsManagement() {
     }));
   };
 
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setProductForm((currentForm) => ({ ...currentForm, [name]: value }));
+  };
+
+  const handleSizeChange = (size) => {
+    setProductForm((currentForm) => ({
+      ...currentForm,
+      availableSizes: currentForm.availableSizes.includes(size)
+        ? currentForm.availableSizes.filter(
+            (currentSize) => currentSize !== size,
+          )
+        : [...currentForm.availableSizes, size],
+    }));
+  };
+
+  // handleAddProduct function to handle adding a new product
+
+  const handleAddProduct = async (event) => {
+    event.preventDefault();
+    const colors = productForm.availableColors
+      .split(",")
+      .map((color) => color.trim())
+      .filter(Boolean);
+
+    if (productForm.availableSizes.length === 0 || colors.length === 0) {
+      setFormError("Select at least one size and enter at least one color.");
+      return;
+    }
+
+    setFormError("");
+    setIsAddingProduct(true);
+    const formData = new FormData();
+
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    formData.append("name", productForm.name.trim());
+    if (productForm.description.trim()) {
+      formData.append("description", productForm.description.trim());
+    }
+    formData.append("price", productForm.price);
+    formData.append(
+      "availableSizes",
+      JSON.stringify(productForm.availableSizes),
+    );
+    formData.append("availableColors", JSON.stringify(colors));
+    formData.append("category", productForm.category.trim());
+    formData.append("quantity", productForm.quantity);
+    console.log("the form data is ", Object.fromEntries(formData));
+
+    try {
+      await dispatch(addProduct(formData)).unwrap();
+      setProductForm(initialProductForm);
+      setShowAddForm(false);
+      setActionFeedback({
+        type: "success",
+        message: "Product added successfully.",
+      });
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
+    } catch (error) {
+      console.log("the errors is ", error);
+      setFormError(
+        typeof error === "string" ? error : "Failed to add product.",
+      );
+      setTimeout(() => {
+        setActionFeedback({ type: "", message: "" });
+      }, 5000);
+    } finally {
+      setIsAddingProduct(false);
+    }
+  };
+  const handleDeleteImage = () => {
+    setImagePreview(null);
+    setImageFile(null);
+  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    setImageFile(file);
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    const imageUrl = URL.createObjectURL(file);
+    setImagePreview(imageUrl);
+  };
+
+  // handleSaveEdit function to handle saving the edited product
+
   const handleSaveEdit = async (event) => {
     event.preventDefault();
     const colors = editForm.availableColors
@@ -255,24 +352,24 @@ export default function ProductsManagement() {
       });
       return;
     }
-
-    const quantity = Number(editForm.quantity);
+    const formdata = new FormData();
+    if (editImageFile) {
+      formdata.append("image", editImageFile);
+    }
+    formdata.append("name", editForm.name.trim());
+    if (editForm.description.trim()) {
+      formdata.append("description", editForm.description.trim());
+    }
+    formdata.append("price", editForm.price);
+    formdata.append("availableSizes", JSON.stringify(editForm.availableSizes));
+    formdata.append("availableColors", JSON.stringify(colors));
+    formdata.append("category", editForm.category.trim());
+    formdata.append("quantity", editForm.quantity);
     try {
       await dispatch(
         editProduct({
           productId: editingProduct.id,
-          productData: {
-            name: editForm.name.trim(),
-            description: editForm.description
-              ? editForm.description.trim()
-              : undefined,
-            category: editForm.category.trim(),
-            price: Number(editForm.price),
-            quantity: quantity,
-            image: editForm.image.trim() || undefined,
-            availableSizes: editForm.availableSizes,
-            availableColors: colors,
-          },
+          productData: formdata,
         }),
       ).unwrap();
       closeEditModal();
@@ -295,73 +392,19 @@ export default function ProductsManagement() {
       return;
     }
   };
-
-  const handleFormChange = (event) => {
-    const { name, value } = event.target;
-    setProductForm((currentForm) => ({ ...currentForm, [name]: value }));
+  const handleRemoveEditImage = () => {
+    setEditImagePreview(null);
+    setEditImageFile(null);
   };
-
-  const handleSizeChange = (size) => {
-    setProductForm((currentForm) => ({
-      ...currentForm,
-      availableSizes: currentForm.availableSizes.includes(size)
-        ? currentForm.availableSizes.filter(
-            (currentSize) => currentSize !== size,
-          )
-        : [...currentForm.availableSizes, size],
-    }));
-  };
-
-  const handleAddProduct = async (event) => {
-    event.preventDefault();
-    const colors = productForm.availableColors
-      .split(",")
-      .map((color) => color.trim())
-      .filter(Boolean);
-
-    if (productForm.availableSizes.length === 0 || colors.length === 0) {
-      setFormError("Select at least one size and enter at least one color.");
-      return;
+  const handleEditImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    setEditImageFile(file);
+    if (editImagePreview) {
+      URL.revokeObjectURL(editImagePreview);
     }
-
-    setFormError("");
-    setIsAddingProduct(true);
-
-    try {
-      await dispatch(
-        addProduct({
-          name: productForm.name.trim(),
-          description: productForm.description
-            ? productForm.description.trim()
-            : undefined,
-          price: Number(productForm.price),
-          image: productForm.image.trim() || undefined,
-          availableSizes: productForm.availableSizes,
-          availableColors: colors,
-          category: productForm.category.trim(),
-          quantity: Number(productForm.quantity),
-        }),
-      ).unwrap();
-      setProductForm(initialProductForm);
-      setShowAddForm(false);
-      setActionFeedback({
-        type: "success",
-        message: "Product added successfully.",
-      });
-      setTimeout(() => {
-        setActionFeedback({ type: "", message: "" });
-      }, 5000);
-    } catch (error) {
-      console.log("the errors is ", error);
-      setFormError(
-        typeof error === "string" ? error : "Failed to add product.",
-      );
-      setTimeout(() => {
-        setActionFeedback({ type: "", message: "" });
-      }, 5000);
-    } finally {
-      setIsAddingProduct(false);
-    }
+    const imageUrl = URL.createObjectURL(file);
+    setEditImagePreview(imageUrl);
   };
 
   return (
@@ -478,14 +521,55 @@ export default function ProductsManagement() {
                 maxLength={1000}
                 className="md:col-span-2 min-h-24 px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
               />
-              <input
-                name="image"
-                type="url"
-                placeholder="Image URL (optional)"
-                value={productForm.image}
-                onChange={handleFormChange}
-                className="md:col-span-2 px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent"
-              />
+              {/* Image Upload */}
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-footer">
+                  Product Image
+                </label>
+
+                {imagePreview ? (
+                  <div className="relative w-40">
+                    <div className="aspect-square w-40 overflow-hidden rounded-lg border border-footer/10 bg-hero">
+                      <img
+                        src={imagePreview}
+                        alt="Product preview"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleDeleteImage}
+                      aria-label="Remove image"
+                      className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-footer text-primary shadow-sm hover:bg-red-600 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="product-image-input"
+                    className="flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-footer/20 bg-hero px-6 py-8 text-center transition-colors hover:border-accent hover:bg-accent/5"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent">
+                      <ImageIcon className="h-5 w-5" />
+                    </div>
+                    <p className="text-sm font-medium text-footer">
+                      Click to upload an image
+                    </p>
+                    <p className="text-xs text-footer/50">
+                      PNG, JPG or WEBP — up to 5MB
+                    </p>
+                    <input
+                      id="product-image-input"
+                      name="image"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
               <div className="md:col-span-2">
                 <p className="mb-2 text-sm font-medium text-footer">
                   Available sizes
@@ -680,7 +764,11 @@ export default function ProductsManagement() {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl">{product.image}</span>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-12 h-12 object-cover rounded-lg"
+                        />
                         <div>
                           <p className="text-sm font-medium text-footer">
                             {product.name}
@@ -1022,14 +1110,61 @@ export default function ProductsManagement() {
                   maxLength={1000}
                   className="min-h-28 px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent md:col-span-2"
                 />
-                <input
-                  name="image"
-                  type="url"
-                  placeholder="Image URL (optional)"
-                  value={editForm.image}
-                  onChange={handleEditFormChange}
-                  className="px-4 py-2 bg-hero border border-footer/10 rounded-lg text-footer placeholder-footer/40 focus:outline-none focus:ring-2 focus:ring-accent md:col-span-2"
-                />
+                {/* Image Upload */}
+                <div className="md:col-span-2">
+                  <label className="mb-2 block text-sm font-medium text-footer">
+                    Product Image
+                  </label>
+
+                  <div className="flex items-center gap-4">
+                    <div className="relative shrink-0">
+                      <div className="h-24 w-24 overflow-hidden rounded-lg border border-footer/10 bg-hero">
+                        {editImagePreview || editForm.image ? (
+                          <img
+                            src={editImagePreview || editForm.image}
+                            alt="Product preview"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-footer/20">
+                            <ImageIcon className="h-6 w-6" />
+                          </div>
+                        )}
+                      </div>
+                      {editImagePreview && (
+                        <button
+                          type="button"
+                          onClick={handleRemoveEditImage}
+                          aria-label="Revert to original image"
+                          className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-footer text-primary shadow-sm hover:bg-red-600 transition-colors"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex-1">
+                      <label
+                        htmlFor="edit-product-image-input"
+                        className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-footer/10 bg-hero px-4 py-2 text-sm font-medium text-footer transition-colors hover:bg-footer/5"
+                      >
+                        <Upload className="h-4 w-4" />
+                        {editForm.image ? "Replace Image" : "Upload Image"}
+                      </label>
+                      <input
+                        id="edit-product-image-input"
+                        name="image"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        onChange={handleEditImageChange}
+                        className="hidden"
+                      />
+                      <p className="mt-1.5 text-xs text-footer/50">
+                        PNG, JPG or WEBP — up to 5MB
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div className="md:col-span-2">
                   <p className="mb-2 text-sm font-medium text-footer">
                     Available sizes
